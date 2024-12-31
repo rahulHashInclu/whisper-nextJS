@@ -10,6 +10,7 @@ export default {
   	extend: {
   		colors: {
 			'signup-bg':'#171717',
+			'signupcard-bg':'#2F2F2F',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

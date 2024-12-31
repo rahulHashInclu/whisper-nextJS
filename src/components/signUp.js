@@ -8,7 +8,7 @@ export default function SignUp(){
         <>
             {/* change the width and heigh declaration because it will not work properly in mobile screens */}
             {/* change card background color */}
-            <Card className="w-[27.5vw] h-[61.4vh] rounded-signup-card">
+            <Card className="w-[27.5vw] h-[61.4vh] rounded-signup-card bg-signupcard-bg">
                 <CardHeader>
                     <CardTitle>Welcome Back</CardTitle>
                     <CardDescription>Don’t have an acccount yet? Sign up</CardDescription>
