@@ -25,7 +25,7 @@ export default function UploadMeetUrlInput() {
   ];
 
   return (
-    <div className="flex gap-0 items-center rounded-md bg-uploadInput-bg p-1">
+    <div className="flex gap-0 items-center rounded-md bg-uploadInput-bg p-1 h-10 border border-[#FFFFFF29]">
       <Select defaultValue="zoom">
         <SelectTrigger className="w-[200px] border-none bg-transparent focus:ring-0 focus:ring-offset-0">
           <div className="flex items-center gap-2">
@@ -68,7 +68,7 @@ export default function UploadMeetUrlInput() {
       <Input
         type="text"
         placeholder="https://"
-        className="border-none bg-transparent focus:ring-0 focus-visible:ring-0 focus:ring-offset-0 placeholder-gray-500"
+        className="border-none bg-[#4C4C4C] focus:ring-0 focus-visible:ring-0 focus:ring-offset-0 placeholder-gray-500 h-8 text-white"
       />
     </div>
   );

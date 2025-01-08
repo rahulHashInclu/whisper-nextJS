@@ -13,6 +13,9 @@ export default {
   			'signupcard-bg': '#2F2F2F',
 			'mainpage-bg':'#212121',
 			'uploadInput-bg':'#393939',
+			'meetConnect-bg':'#D9D9D9',
+			'recordBtn-border':'#FFFFFF29',
+			'uploadCard-border':'#666666',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
