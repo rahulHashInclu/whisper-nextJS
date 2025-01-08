@@ -11,6 +11,8 @@ export default {
   		colors: {
   			'signup-bg': '#171717',
   			'signupcard-bg': '#2F2F2F',
+			'mainpage-bg':'#212121',
+			'uploadInput-bg':'#393939',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
