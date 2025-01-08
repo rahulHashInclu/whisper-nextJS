@@ -1,6 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
+import { Play, Pause } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+
+const video_forward_icon = "/assets/vid-10sec-forward-icon.svg";
+const video_backward_icon = "/assets/vid-10sec-backward-icon.svg";
 
 const formatTime = (timeInSeconds) => {
   const minutes = Math.floor(timeInSeconds / 60);
@@ -21,10 +27,11 @@ export default function InteractiveAudioWaveform({ audioUrl }) {
       waveColor: "#4C4C4C",
       progressColor: "#FFFFFF",
       ursorColor: "#FFFFFF",
-      barWidth: 2,
-      barGap: 1,
+      barWidth: 1,
+      barGap: 3,
+      barHeight: 3,
       responsive: true,
-      height: 20,
+      height: 30,
     });
     waveSurferRef.current.load(audioUrl);
 
@@ -48,7 +55,9 @@ export default function InteractiveAudioWaveform({ audioUrl }) {
     //cleanup
     return () => {
       if (waveSurferRef.current) {
+        waveSurferRef.current.pause();
         waveSurferRef.current.destroy();
+        waveSurferRef.current = null;
       }
     };
   }, [audioUrl]);
@@ -59,22 +68,60 @@ export default function InteractiveAudioWaveform({ audioUrl }) {
     }
   };
 
+  const handleSkipForward = () => {
+    if(waveSurferRef.current){
+        waveSurferRef.current.skip(10);
+    }
+  }
+
+  const handleSkipBackward = () => {
+    if(waveSurferRef.current){
+        waveSurferRef.current.skip(-10);
+    }
+  }
+
   return (
-    <div className="w-full  p-4 rounded-lg">
-      <div className="flex items-center gap-4 mb-4">
-        <button
+    <div className="w-full flex items-center justify-between gap-4 px-2 py-4 rounded-lg">
+      <div className="flex items-center gap-2">
+        <Button className="w-8 h-8 rounded-full flex items-center justify-center bg-transparent border border-gray-600 hover:bg-gray-800" size="icon" onClick={handleSkipBackward}>
+          <Image
+            src={video_backward_icon}
+            alt="video-backward-icon"
+            width={18}
+            height={18}
+          />
+        </Button>
+        <Button
           onClick={handlePlayPause}
-          className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
+          className="rounded-full flex items-center justify-center bg-white hover:bg-gray-200 shadow-lg shadow-[#FFFFFF4D]"
+          size="icon"
         >
           {isPlaying ? (
-            <div className="w-4 h-4 bg-white rounded-sm" /> // Pause icon
+            <Pause
+              size={16}
+              color="black"
+              className="text-black hover:text-white transition-colors duration-200"
+            /> // Pause icon
           ) : (
-            <div className="w-0 h-0 border-t-8 border-b-8 border-l-12 border-l-white border-t-transparent border-b-transparent ml-1" /> // Play icon
+            <Play
+              size={16}
+              color="black"
+              className="text-black hover:text-white transition-colors duration-200"
+            /> // Play icon
           )}
-        </button>
-        {/* <div className="text-white">
-          {currentTime} / {duration}
-        </div> */}
+        </Button>
+        <Button
+          className="w-8 h-8 rounded-full flex items-center justify-center bg-transparent border border-gray-600 hover:bg-gray-800"
+          size="icon"
+          onClick={handleSkipForward}
+        >
+          <Image
+            src={video_forward_icon}
+            alt="video-forward-icon"
+            width={18}
+            height={18}
+          />
+        </Button>
       </div>
 
       <div ref={waveFormRef} className="w-full cursor-pointer" />
