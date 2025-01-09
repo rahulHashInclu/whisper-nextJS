@@ -12,6 +12,7 @@ import SignupHeaderUi from "../custom-ui/signUp-header-ui";
 import { Separator } from "../ui/separator";
 import Link from "next/link";
 import { span_url } from "@/styleClasses/componentStyleClasses";
+import SignInForm from "./signInForm";
 
 const appleLogo = "/assets/icons/apple-logo.svg";
 const googleLogo = "/assets/icons/google-logo.svg";
@@ -39,39 +40,7 @@ export default function SignIn() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form className="space-y-4">
-          <div className="relative">
-            <img src={emailIcon} alt="email-icon" className={inputIconStyle} />
-            <Input
-              id="email"
-              placeholder="Email address"
-              type="email"
-              required
-              className={inputStyle}
-            />
-          </div>
-
-          <div className="relative">
-            <img
-              src={passwordIcon}
-              alt="password-icon"
-              className={inputIconStyle}
-            />
-            <Input
-              id="password"
-              type="password"
-              placeholder="Password"
-              required
-              className={inputStyle}
-            />
-          </div>
-
-          <CardDescription>Forgot Password ?</CardDescription>
-
-          <Button className="w-full py-6 bg-white opacity-25 text-black font-normal">
-            Sign up
-          </Button>
-        </form>
+        <SignInForm />
       </CardContent>
       {/* <Separator /> */}
       <div className="flex items-center mb-6">

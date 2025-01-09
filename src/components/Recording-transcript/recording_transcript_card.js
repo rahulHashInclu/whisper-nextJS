@@ -3,8 +3,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Card, CardHeader, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { tabs_trigger_style } from "@/styleClasses/componentStyleClasses";
 import TranscriptTabContents from "./transcript_tabcontent";
+
+
+const tabs_trigger_style = "border-b-2 border-transparent data-[state=active]:border-b-white data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:rounded-none data-[state=active]:text-white";
 
 // pass the following as props
 // recording_id, recording_name
