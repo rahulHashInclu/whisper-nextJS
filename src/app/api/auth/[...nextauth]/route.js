@@ -53,7 +53,12 @@ export const authOptions = {
     },
     pages: {
         signIn: '/signin',
-        error: '/signin',  // Redirect back to signin page instead of error page
+        error: '/signin',
     },
-    debug: true  // Enable debug messages
+    debug: true 
 }
+
+const handler = NextAuth(authOptions);
+
+// For App Router, must export like this:
+export { handler as GET, handler as POST };

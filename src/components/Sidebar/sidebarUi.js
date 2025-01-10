@@ -25,7 +25,7 @@ export default function SidebarUi() {
 
   const SideBarContent = (
     <>
-      <SidebarHeader className="bg-[#171717] flex flex-row items-center justify-between py-3">
+      <SidebarHeader className="bg-[#171717] flex flex-row items-center justify-end md:justify-between py-3">
         {!isMobile && (<Button onClick={toggleSidebar}>
           <img
             src={sidebarCollapseIcon}
@@ -33,7 +33,7 @@ export default function SidebarUi() {
             className="w-5 h-5"
           />
         </Button>)}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6 md:gap-4">
           <img src={searchIcon} alt="search-icon" />
           <img src={editIcon} alt="edit-icon" />
         </div>
@@ -58,14 +58,7 @@ export default function SidebarUi() {
           /> */}
           </Button>
         </SheetTrigger>
-        {/* <Button onClick={toggleSidebar}>
-          <img
-            src={sidebarCollapseIcon}
-            alt="collapse-icon"
-            className="w-5 h-5"
-          />
-        </Button> */}
-        <SheetContent side="left" className="p-0 w-80">
+        <SheetContent side="left" className="p-0 w-80 h-screen bg-[#171717]">
           {SideBarContent}
         </SheetContent>
       </Sheet>
