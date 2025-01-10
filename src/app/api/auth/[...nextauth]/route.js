@@ -12,6 +12,7 @@ export const authOptions = {
             },
             async authorize(credentials) {
                 try{
+                    console.log('Attempting to authenticate...', credentials.email);
                     const response = await fetch(SIGN_IN, {
                         method: 'POST',
                         headers: {
@@ -27,6 +28,9 @@ export const authOptions = {
                     if(response?.ok && user?.access_token) {
                         return user;
                     }
+                    else{
+                        alert('Login failed')
+                    }
                     throw new Error('Login failed');
                 }
                 catch(err){
@@ -36,6 +40,20 @@ export const authOptions = {
         })
     ],
     callbacks: {
-
-    }
+        async jwt({token, user}){
+            if(user){
+                token.accessToken = user.access_token
+            }
+            return token;
+        },
+        async session({session, token}){
+            session.accessToken = token.accessToken;
+            return session;
+        }
+    },
+    pages: {
+        signIn: '/signin',
+        error: '/signin',  // Redirect back to signin page instead of error page
+    },
+    debug: true  // Enable debug messages
 }

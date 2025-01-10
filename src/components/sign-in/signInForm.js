@@ -7,6 +7,8 @@ import { useState, useCallback, useEffect } from "react";
 import { formValidation } from "@/lib/utils";
 import { signInUser } from "@/helper/requests";
 import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const userIcon = "/assets/icons/User-icon.svg";
 const emailIcon = "/assets/icons/Email-icon.svg";
@@ -25,6 +27,7 @@ export default function SignInForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formErrors, setFormErrors] = useState({});
     const [globalError, setGlobalError] = useState('');
+    const router = useRouter();
 
     const handleChange = useCallback((e) => {
         const { id, value } = e.target;
@@ -56,8 +59,21 @@ export default function SignInForm() {
 
         setIsSubmitting(true);
         try{
-            const response = await signInUser(formData.email, formData.password);
-            console.log('Sign in user response...', response);
+            // const response = await signInUser(formData.email, formData.password);
+            // console.log('Sign in user response...', response);
+            const email = formData.email;
+            const password = formData.password;
+            const result = await signIn('credentials', {
+              email,
+              password,
+              redirect: false
+            })
+            if (result.error) {
+              console.error('Next-Auth Error:', result.error);
+            } else {
+              // Successful login
+              router.push('/mainPages/upload'); // or wherever you want to redirect
+            }
         }
         catch(err){
             setGlobalError('Signup failed, please try again');
@@ -70,6 +86,7 @@ export default function SignInForm() {
     useEffect(() => {
         console.log('Form data values change...', formData)
     }, [formData])
+
     useEffect(() => {
         console.log('Form errors...', formErrors);
     }, [formErrors])

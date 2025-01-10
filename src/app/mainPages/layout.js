@@ -6,7 +6,7 @@ import Avatar from "@/components/custom-ui/avatar";
 export default function MainPagesLayout({ children }) {
   return (
     <>
-      <SidebarProvider>
+      <SidebarProvider className="bg-signupcard-bg">
         <SidebarUi />
         <SidebarInset className="h-screen bg-mainpage-bg flex flex-col">
           <div className="flex items-center py-2 px-2">

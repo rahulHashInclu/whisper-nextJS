@@ -16,6 +16,7 @@ export default {
 			'meetConnect-bg':'#D9D9D9',
 			'recordBtn-border':'#FFFFFF29',
 			'uploadCard-border':'#666666',
+			'separator-color':'#FFFFFF29',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

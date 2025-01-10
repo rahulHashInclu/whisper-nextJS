@@ -1,42 +1,92 @@
+"use client";
 import {
-  SidebarProvider,
   Sidebar,
   SidebarHeader,
-  SidebarTrigger,
   SidebarContent,
+  useSidebar,
+  SidebarSeparator,
 } from "../ui/sidebar";
 import RecordingsList from "./recordingsList";
+import { Button } from "../ui/button";
+import { Menu } from "lucide-react";
+import { Sheet, SheetTrigger, SheetContent } from "../ui/sheet";
 
 const editIcon = "/assets/icons/Edit-icon.svg";
 const searchIcon = "/assets/icons/search-icon.svg";
 const sidebarCollapseIcon = "/assets/icons/sidebar-collapse-icon.svg";
 
 const recordings = Array.from({ length: 7 }, (_, i) => ({
-    id: `recording_20241217121419`,
-    date: new Date(2024, 11, 17, 17, 14), // December 17, 2024, 5:14 PM
-  }))
+  id: `recording_20241217121419`,
+  date: new Date(2024, 11, 17, 17, 14), // December 17, 2024, 5:14 PM
+}));
 
 export default function SidebarUi() {
+  const { open, setOpen, toggleSidebar, isMobile } = useSidebar();
+
+  const SideBarContent = (
+    <>
+      <SidebarHeader className="bg-[#171717] flex flex-row items-center justify-between py-3">
+        {!isMobile && (<Button onClick={toggleSidebar}>
+          <img
+            src={sidebarCollapseIcon}
+            alt="collapse-icon"
+            className="w-5 h-5"
+          />
+        </Button>)}
+        <div className="flex items-center gap-4">
+          <img src={searchIcon} alt="search-icon" />
+          <img src={editIcon} alt="edit-icon" />
+        </div>
+      </SidebarHeader>
+      <SidebarSeparator />
+        <SidebarContent className="bg-[#171717] pt-3">
+          <RecordingsList recordings={recordings} />
+      </SidebarContent>
+    </>
+  );
+
+  if(isMobile){
+    return(
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild>
+          <Button  size="icon" className="fixed left-2 top-2 z-50 border-1 border-white md:hidden">
+            <Menu className="h-5 w-5 " />
+            {/* <img
+            src={sidebarCollapseIcon}
+            alt="collapse-icon"
+            className="w-5 h-5"
+          /> */}
+          </Button>
+        </SheetTrigger>
+        {/* <Button onClick={toggleSidebar}>
+          <img
+            src={sidebarCollapseIcon}
+            alt="collapse-icon"
+            className="w-5 h-5"
+          />
+        </Button> */}
+        <SheetContent side="left" className="p-0 w-80">
+          {SideBarContent}
+        </SheetContent>
+      </Sheet>
+    )
+  }
+
+
   return (
-    // <SidebarProvider>
-      <Sidebar>
-        <SidebarHeader className="bg-[#171717] flex flex-row items-center justify-between">
-          <SidebarTrigger>
-            <img
-              src={sidebarCollapseIcon}
-              alt="collapse-icon"
-              className="w-4 h-4"
-            />
-          </SidebarTrigger>
-          <div className="flex items-center gap-1">
-            <img src={searchIcon} alt="search-icon" />
-            <img src={editIcon} alt="edit-icon" />
-          </div>
-        </SidebarHeader>
-        <SidebarContent className="bg-[#171717]">
-          <RecordingsList recordings={recordings}/>
-        </SidebarContent>
+    <>
+      <Sidebar className="border-r-0">
+        {SideBarContent}
       </Sidebar>
-    // </SidebarProvider>
+      {!open && (
+        <Button
+          variant="ghost"
+          className="fixed left-4 top-2 z-50 p-2 bg-signupcard-bg hover:bg-[#2a2a2a]"
+          onClick={() => setOpen(true)}
+        >
+          <Menu className="h-5 w-5 bg-white" />
+        </Button>
+      )}
+    </>
   );
 }
