@@ -1,7 +1,7 @@
 import SidebarUi from "@/components/Sidebar/sidebarUi";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import MainPageHeader from "@/components/custom-ui/mainPageHeader";
-import Avatar from "@/components/custom-ui/avatar";
+import SignOutDropdown from "@/components/sign-out/signOutDropdown";
 
 export default function MainPagesLayout({ children }) {
   return (
@@ -13,7 +13,7 @@ export default function MainPagesLayout({ children }) {
             <div className="flex-1" />
             <MainPageHeader />
             <div className="flex-1 flex justify-end">
-              <Avatar />
+              <SignOutDropdown username="Rahul"/>
             </div>
           </div>
 

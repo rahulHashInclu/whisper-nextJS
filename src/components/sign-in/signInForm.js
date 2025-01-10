@@ -72,7 +72,7 @@ export default function SignInForm() {
               console.error('Next-Auth Error:', result.error);
             } else {
               // Successful login
-              router.push('/mainPages/upload'); // or wherever you want to redirect
+              router.push('/mainPages/upload');
             }
         }
         catch(err){
