@@ -1,3 +1,6 @@
 31-12-2024 -- rahul
 -- signup component is split into UI and interactivity (signUpForm) components
 -- Created styleClasses directory to get classnames (With styles ofc) for reuse
+
+13-01-2025 -- rahul
+-- FFmpeg web worker error was resolved by disabling turbopack and switching to webpack
