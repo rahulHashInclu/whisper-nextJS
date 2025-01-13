@@ -1,11 +1,86 @@
 'use client'
 
-import { format } from "date-fns"
+import { format, isToday, subDays } from "date-fns"
 import { MoreHorizontal } from "lucide-react";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 import { Button } from "../ui/button";
+import { AudioService } from "@/lib/audioService";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function RecordingsList({ recordings }){
+
+  const [fetchedRecordings, setFetchedRecordings] = useState(null);
+  const today = new Date();
+  const weekAgo = subDays(today, 7);
+  const monthAgo = subDays(today, 30);
+
+  // for testing purpose
+  const {status, data:session} = useSession();
+  
+  useEffect(() => {
+    console.log('Session status : ', status);
+    console.log("Session value : ", session);
+  }, [status, session])
+  //
+
+  const categorizeRecordingsByTimestamp = (recordings) => {
+    const categories = {
+      Today: [],
+      "Previous 7 days": [],
+      "Previous 30 days": []
+    };
+
+    const sortedRecordings = recordings.sort((a,b) => {
+      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+    });
+
+    sortedRecordings.forEach(recording => {
+      const date = new Date(recording.timestamp);
+      if(isToday(date)){
+        categories["Today"].push(recording);
+      }
+      else if(date > weekAgo){
+        categories["Previous 7 days"].push(recording);
+      }
+      else if(date > monthAgo){
+        categories["Previous 30 days"].push(recording);
+      }
+      else{
+        const monthYear = format(
+          date, "MMMM yyyy");
+        if (!categories[monthYear]) {
+          categories[monthYear] = [];
+        }
+        categories[monthYear].push(recording);
+      }
+    });
+
+    // Filter out empty categories
+    return Object.fromEntries(
+      Object.entries(categories).filter(([key, value]) => value.length > 0)
+    );
+  }
+
+  const getRecordings = async () => {
+    try{
+      const {data, ok} = await AudioService.getRecordings();
+      if(ok){
+        console.log("Fetched recordings...", data);
+        const categorizedRecordings = categorizeRecordingsByTimestamp(data?.recordings);
+        setFetchedRecordings(categorizedRecordings);
+      }
+    }
+    catch(err){
+      console.error(err);
+      throw err;
+    }
+  }
+
+  useEffect(() => {
+    getRecordings();
+  }, [])
+
 
     return(
         <div className="flex flex-col gap-1 px-2">

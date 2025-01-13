@@ -25,6 +25,7 @@ export const authOptions = {
                     });
 
                     const user = await response.json();
+                    console.log("USER OBJECT AUTH config/...", user);
                     if(response?.ok && user?.access_token) {
                         return user;
                     }
@@ -42,7 +43,7 @@ export const authOptions = {
     callbacks: {
         async jwt({token, user}){
             if(user){
-                token.accessToken = user.access_token
+                token.accessToken = user.access_token;
             }
             return token;
         },

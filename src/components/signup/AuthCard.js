@@ -11,7 +11,7 @@ import SignupHeaderUi from "../custom-ui/signUp-header-ui";
 import { Separator } from "../ui/separator";
 import { span_url } from "@/styleClasses/componentStyleClasses";
 import Link from "next/link";
-import SignUpForm from "./signUpForm";
+import AuthForm from "./AuthForm";
 
 const appleLogo = "/assets/icons/apple-logo.svg";
 const googleLogo = "/assets/icons/google-logo.svg";
@@ -47,7 +47,7 @@ export default function AuthCard({initialType}) {
         
       </CardHeader>
       <CardContent>
-        <SignUpForm />
+        <AuthForm initialType={initialType} />
       </CardContent>
       {/* <Separator /> */}
       <div className="flex items-center mb-6">

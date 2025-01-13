@@ -128,6 +128,14 @@ export default function AuthForm({ initialType }) {
     }
   };
 
+  useEffect(() => {
+      console.log('Form data values change...', formData)
+  }, [formData])
+
+  useEffect(() => {
+      console.log('Form errors...', formErrors);
+  }, [formErrors])
+
   return (
     <form className="space-y-4" onSubmit={handleSubmission}>
       {isSignup && (

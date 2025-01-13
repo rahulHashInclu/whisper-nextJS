@@ -11,13 +11,14 @@ import {
 import { Label } from "../ui/label";
 import UploadMeetUrlInput from "./uploadMeetUrlInput";
 import { themeStyles } from "@/styleClasses/componentStyleClasses";
+import UploadAudioDragAndDrop from "./uploadAudioDragAndDrop";
 
 const voice_record_icon = "/assets/icons/voice-record-icon.svg";
 const upload_icon = "/assets/icons/upload-icon.svg";
 const uploadBgImg = "/assets/upload-bgImg.png";
 const googleDriveIcon = "/assets/icons/cloud-drive-icon.svg";
 
-export default function UploadAudio() {
+export default function UploadAudioCard() {
   return (
     <div>
       <Card className="max-w-2xl bg-signupcard-bg rounded-2xl border border-uploadCard-border">
@@ -45,7 +46,7 @@ export default function UploadAudio() {
           </div>
 
           {/* Drag & Drop section */}
-          <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">
+          {/* <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">
             <div className="flex flex-col items-center gap-3">
                 <Image src={uploadBgImg} width={80} height={80} alt="upload-img"/>
               <p className="text-white text-lg">
@@ -66,7 +67,8 @@ export default function UploadAudio() {
                 Or select a folder
               </Button>
             </div>
-          </div>
+          </div> */}
+          <UploadAudioDragAndDrop />
         </CardContent>
         <CardFooter>
           <div className="flex gap-2 text-gray-400 text-sm justify-center items-center">
