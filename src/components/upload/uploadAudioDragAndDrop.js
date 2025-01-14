@@ -9,6 +9,8 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { AudioService } from "@/lib/audioService";
 import toast from "react-hot-toast";
+import AudioRecorder from "./recordAudio";
+import ConnectWithMeet from "./connectWithMeet";
 
 const uploadBgImg = "/assets/upload-bgImg.png";
 const googleDriveIcon = "/assets/icons/cloud-drive-icon.svg";
@@ -21,6 +23,7 @@ export default function UploadAudioDragAndDrop() {
   const [audioFile, setAudioFile] = useState(null);
   const [speakers, setSpeakers] = useState("");
   const [isConverting, setIsConverting] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const abortControlRef = useRef(null);
   // to cancel the conversion process when new file is selected
@@ -74,13 +77,19 @@ export default function UploadAudioDragAndDrop() {
     fileInputRef.current.click();
   };
 
-  const handleAudioFileSelect = async (e) => {
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+  }
+
+  const handleAudioFileSelect = async () => {
     setIsConverting(true);
     abortControlRef.current = new AbortController();
     const conversionToast = toast.promise(
       async () => {
         try {
-          const selectedAudioFile = e.target.files[0];
+        //   const selectedAudioFile = e.target.files[0];
+          const selectedAudioFile = selectedFile;
           console.log("Selected audio file", selectedAudioFile);
           const ffmpeg = ffmpegRef.current;
 
@@ -207,8 +216,21 @@ export default function UploadAudioDragAndDrop() {
     }
   };
 
+  const handleRecordingComplete = (blob) => {
+    setSelectedFile(blob);
+  }
+
+  useEffect(() => {
+    handleAudioFileSelect();
+  }, [selectedFile])
+
   return (
     <>
+      <div className="flex flex-col justify-between items-start md:flex-row md:items-center gap-4 mb-4">
+        <AudioRecorder onRecordingComplete={handleRecordingComplete} />
+        <ConnectWithMeet />
+      </div>
+
       <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">
         <div className="flex flex-col items-center gap-3">
           <Image src={uploadBgImg} width={80} height={80} alt="upload-img" />
@@ -253,7 +275,7 @@ export default function UploadAudioDragAndDrop() {
           <input
             type="file"
             ref={fileInputRef}
-            onChange={handleAudioFileSelect}
+            onChange={handleFileSelect}
             style={{ display: "none" }}
           />
         </div>
