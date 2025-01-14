@@ -257,7 +257,7 @@ export default function UploadAudioDragAndDrop() {
                   : "opacity-0 max-h-0 overflow-hidden"
               }`}
             >
-              <Label>Number of speakers</Label>
+              <Label className="text-white">Number of speakers</Label>
               <div className="flex flex-row gap-3">
                 <Input
                   type="numbers"

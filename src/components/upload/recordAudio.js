@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
 import { themeStyles } from '@/styleClasses/componentStyleClasses';
+import { MicOff } from 'lucide-react';
 
 
 const voice_record_icon = "/assets/icons/voice-record-icon.svg";
@@ -37,10 +38,10 @@ export default function AudioRecorder({
   }
 
   const handleStartRecording = async () => {
-    setIsRecording(true);
     audioChunks.current = []
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      setIsRecording(true);
       mediaRecorder.current = new MediaRecorder(stream)
       
       mediaRecorder.current.ondataavailable = (event) => {
@@ -55,7 +56,7 @@ export default function AudioRecorder({
       mediaRecorder.current.start()
     //   startRecording()
     } catch (error) {
-      toast.error("Error accessing microphone:", { duration: 5000 });
+      toast.error("Error accessing microphone..", { duration: 5000 });
     }
   }
 
@@ -85,7 +86,8 @@ export default function AudioRecorder({
     <div className="flex flex-col justify-center gap-2">
         <Label className={themeStyles.text.label}>Record Audio</Label>
         <Button className="border border-[#FFFFFF29] bg-[#FFFFFF0D]" onClick={isRecording ? handleStopRecording: handleStartRecording}>
-        <img src={voice_record_icon} alt="voice-record-icon" />{isRecording ? 'Stop Recording':'Record'}</Button>
+        {isRecording ? <MicOff/> : <img src={voice_record_icon} alt="voice-record-icon" />}
+        {isRecording ? 'Stop Recording':'Record'}</Button>
     </div>
   )
 }

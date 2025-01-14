@@ -118,7 +118,7 @@ export default function AuthForm({ initialType }) {
           console.error("Next-Auth Error:", result.error);
         } else {
           // Successful login
-          router.push("/mainPages/upload");
+          router.push("/upload");
         }
       }
     } catch (err) {
