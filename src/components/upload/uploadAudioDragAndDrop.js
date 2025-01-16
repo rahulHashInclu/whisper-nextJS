@@ -80,7 +80,7 @@ export default function UploadAudioDragAndDrop() {
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
-  }
+  };
 
   const handleAudioFileSelect = async () => {
     setIsConverting(true);
@@ -88,7 +88,7 @@ export default function UploadAudioDragAndDrop() {
     const conversionToast = toast.promise(
       async () => {
         try {
-        //   const selectedAudioFile = e.target.files[0];
+          //   const selectedAudioFile = e.target.files[0];
           const selectedAudioFile = selectedFile;
           console.log("Selected audio file", selectedAudioFile);
           const ffmpeg = ffmpegRef.current;
@@ -177,9 +177,9 @@ export default function UploadAudioDragAndDrop() {
   };
 
   const handleSpeakerChange = (e) => {
-    const value = e.target.value;
+    const value = e.target.value.trim();
     const regex = /^(?:[1-9][0-9]?|100)$/;
-    if (regex.test(value)) {
+    if (value === "" || regex.test(value)) {
       setSpeakers(value);
       setError(null);
     } else {
@@ -218,11 +218,16 @@ export default function UploadAudioDragAndDrop() {
 
   const handleRecordingComplete = (blob) => {
     setSelectedFile(blob);
-  }
+  };
+
+  const handleCancelUpload = () => {
+    setAudioFile(null);
+    setSpeakers("");
+  };
 
   useEffect(() => {
     handleAudioFileSelect();
-  }, [selectedFile])
+  }, [selectedFile]);
 
   return (
     <>
@@ -242,35 +247,38 @@ export default function UploadAudioDragAndDrop() {
             <img src={googleDriveIcon} alt="Google Drive" className="w-5 h-5" />
             Select from drive
           </Button>
-          <Button
-            variant="link"
-            className="text-white underline"
-            onClick={handleFileInputRefClick}
-          >
-            Or select a folder
-          </Button>
-          {/* {audioFile && ( */}
-            <div
-              className={`transition-all duration-500 ease-in-out flex flex-col items-center gap-2 ${
-                audioFile
-                  ? "opacity-100 max-h-50"
-                  : "opacity-0 max-h-0 overflow-hidden"
-              }`}
+          {!audioFile && (
+            <Button
+              variant="link"
+              className="text-white underline"
+              onClick={handleFileInputRefClick}
             >
-              <Label className="text-white">Number of speakers</Label>
-              <div className="flex flex-row gap-3">
-                <Input
-                  type="numbers"
-                  min="1"
-                  placeholder="Enter number of speakers"
-                  value={speakers}
-                  onChange={handleSpeakerChange}
-                />
-                <Button disabled={!speakers} onClick={handleAudioUpload}>
-                  Upload
-                </Button>
-              </div>
+              Or select a folder
+            </Button>
+          )}
+
+          <div
+            className={`transition-all duration-500 ease-in-out flex flex-col items-center gap-2 ${
+              audioFile
+                ? "opacity-100 max-h-50"
+                : "opacity-0 max-h-0 overflow-hidden"
+            }`}
+          >
+            <Label className="text-white">Number of speakers</Label>
+            <div className="flex flex-row gap-3">
+              <Input
+                type="numbers"
+                min="1"
+                placeholder="Enter number of speakers"
+                value={speakers}
+                onChange={handleSpeakerChange}
+              />
+              <Button disabled={!speakers} onClick={handleAudioUpload}>
+                Upload
+              </Button>
+              <Button onClick={handleCancelUpload}>Cancel</Button>
             </div>
+          </div>
           {/* )} */}
           <input
             type="file"
