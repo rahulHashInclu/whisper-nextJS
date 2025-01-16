@@ -1,8 +1,9 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { SIGN_IN } from "@/helper/constants";
+import { SIGN_IN, BASE_PATH } from "@/helper/constants";
 
 export const authOptions = {
+    basePath: "/whisper/api/auth",
     providers: [
         CredentialsProvider({
             name: 'Credentials',

@@ -3,21 +3,25 @@
 import { Button } from "../ui/button";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { FFmpeg } from "@ffmpeg/ffmpeg";
-import { toBlobURL, fetchFile } from "@ffmpeg/util";
+// import { FFmpeg } from "@ffmpeg/ffmpeg";
+// import { toBlobURL, fetchFile } from "@ffmpeg/util";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { AudioService } from "@/lib/audioService";
 import toast from "react-hot-toast";
 import AudioRecorder from "./recordAudio";
 import ConnectWithMeet from "./connectWithMeet";
+import { getAssetPath } from "@/lib/utils";
 
-const uploadBgImg = "/assets/upload-bgImg.png";
-const googleDriveIcon = "/assets/icons/cloud-drive-icon.svg";
+const uploadBgImg = getAssetPath("/assets/upload-bgImg.png");
+const googleDriveIcon = getAssetPath("/assets/icons/cloud-drive-icon.svg");
 
 export default function UploadAudioDragAndDrop() {
   const fileInputRef = useRef();
-  const ffmpegRef = useRef(new FFmpeg());
+//   const ffmpegRef = useRef(new FFmpeg());
+    // dynamic import attempt
+  const ffmpegRef = useRef(null);
+  //
   const [ffmpegLoaded, setFfmpegLoaded] = useState(false);
   const [error, setError] = useState("");
   const [audioFile, setAudioFile] = useState(null);
@@ -37,6 +41,11 @@ export default function UploadAudioDragAndDrop() {
   // load ffmpeg
   const loadFfmpeg = async () => {
     try {
+        // dynamic import attempt
+        const {FFmpeg} = await import('@ffmpeg/ffmpeg');
+        const { toBlobURL } = await import('@ffmpeg/util');
+        ffmpegRef.current = new FFmpeg();
+        //
       const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd";
       const ffmpeg = ffmpegRef.current;
       await ffmpeg.load({
@@ -102,6 +111,10 @@ export default function UploadAudioDragAndDrop() {
           if (abortControlRef.current.signal.aborted) {
             throw new Error("Conversion cancelled");
           }
+
+          //dynamic import attempt
+          const { fetchFile } = await import('@ffmpeg/util');
+          //
 
           const fileBuffer = await fetchFile(selectedAudioFile);
           await ffmpeg.writeFile("input.mp4", fileBuffer);

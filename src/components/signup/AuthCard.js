@@ -12,10 +12,11 @@ import { Separator } from "../ui/separator";
 import { span_url } from "@/styleClasses/componentStyleClasses";
 import Link from "next/link";
 import AuthForm from "./AuthForm";
+import { getAssetPath } from "@/lib/utils";
 
-const appleLogo = "/assets/icons/apple-logo.svg";
-const googleLogo = "/assets/icons/google-logo.svg";
-const xLogo = "/assets/icons/x-logo.svg";
+const appleLogo = getAssetPath("/assets/icons/apple-logo.svg");
+const googleLogo = getAssetPath("/assets/icons/google-logo.svg");
+const xLogo = getAssetPath("/assets/icons/x-logo.svg");
 
 const seperatorStyle = "flex-1 mx-6 bg-[#97979780]";
 

@@ -1,6 +1,7 @@
+import { getAssetPath } from "@/lib/utils";
 
-const headerImage = '/assets/signup-card-title-img.png';
-const whisperMainText = '/assets/WHISPER.png';
+const headerImage = getAssetPath('/assets/signup-card-title-img.png');
+const whisperMainText = getAssetPath('/assets/WHISPER.png');
 
 export default function MainPageHeader(){
 

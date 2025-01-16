@@ -1,6 +1,8 @@
-const signUp_bgImg_left = "/assets/signup-bgImg-left.png";
-const signUp_bgImg_right = "/assets/signup-bgImg-right.png";
-const signUp_bgImg_gradient = "/assets/signup-bgImg-gradient.png";
+import { getAssetPath } from "@/lib/utils";
+
+const signUp_bgImg_left = getAssetPath("/assets/signup-bgImg-left.png");
+const signUp_bgImg_right = getAssetPath("/assets/signup-bgImg-right.png");
+const signUp_bgImg_gradient = getAssetPath("/assets/signup-bgImg-gradient.png");
 
 export default function SignUpCardHolder({ children }) {
   return (

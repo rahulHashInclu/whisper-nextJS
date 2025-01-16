@@ -1,4 +1,4 @@
-
+'use client'
 import {
   Card,
   CardContent,
@@ -7,8 +7,9 @@ import {
   CardTitle,
 } from "../ui/card";
 import UploadAudioDragAndDrop from "./uploadAudioDragAndDrop";
+import { getAssetPath } from "@/lib/utils";
 
-const upload_icon = "/assets/icons/upload-icon.svg";
+const upload_icon = getAssetPath("/assets/icons/upload-icon.svg");
 
 export default function UploadAudioCard() {
   return (

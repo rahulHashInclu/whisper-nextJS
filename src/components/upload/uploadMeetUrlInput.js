@@ -8,8 +8,9 @@ import {
   SelectTrigger,
 } from "../ui/select";
 import { Input } from "../ui/input";
+import { getAssetPath } from "@/lib/utils";
 
-const zoomIcon = "/assets/icons/zoom-icon.png";
+const zoomIcon = getAssetPath("/assets/icons/zoom-icon.png");
 
 export default function UploadMeetUrlInput() {
   // Add other media options here

@@ -26,10 +26,6 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
-        {/* <SessionProvider>
-          <Toaster position="bottom-right" />
-          {children}
-        </SessionProvider> */}
         <Providers>
           {children}
         </Providers>

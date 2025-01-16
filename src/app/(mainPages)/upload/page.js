@@ -1,3 +1,4 @@
+'use client'
 import UploadAudioCard from "@/components/upload/uploadAudioCard";
 
 export default function UploadAudioPage() {

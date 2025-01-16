@@ -10,10 +10,11 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { getAssetPath } from "@/lib/utils";
 
-const userIcon = "/assets/icons/User-icon.svg";
-const emailIcon = "/assets/icons/Email-icon.svg";
-const passwordIcon = "/assets/icons/Password-lock-icon.svg";
+const userIcon = getAssetPath("/assets/icons/User-icon.svg");
+const emailIcon = getAssetPath("/assets/icons/Email-icon.svg");
+const passwordIcon = getAssetPath("/assets/icons/Password-lock-icon.svg");
 
 const inputStyle =
   "bg-[#0F0F0F] border border-[#3B3D41] rounded pl-12 py-3 text-white placeholder:text-gray-400";

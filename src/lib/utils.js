@@ -1,5 +1,6 @@
 import { clsx } from "clsx";
-import { twMerge } from "tailwind-merge"
+import { twMerge } from "tailwind-merge";
+import { BASE_PATH } from "@/helper/constants";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -48,4 +49,8 @@ export function formValidation({email, password}){
     isValid,
     errors
   }
+}
+
+export function getAssetPath(path){
+  return `${BASE_PATH}${path}`
 }

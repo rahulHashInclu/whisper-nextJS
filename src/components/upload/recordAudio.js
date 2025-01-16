@@ -7,9 +7,10 @@ import { Label } from '../ui/label';
 import { Button } from '../ui/button';
 import { themeStyles } from '@/styleClasses/componentStyleClasses';
 import { MicOff } from 'lucide-react';
+import { getAssetPath } from '@/lib/utils';
 
 
-const voice_record_icon = "/assets/icons/voice-record-icon.svg";
+const voice_record_icon = getAssetPath("/assets/icons/voice-record-icon.svg");
 
 export default function AudioRecorder({ 
   onRecordingComplete

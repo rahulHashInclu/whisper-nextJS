@@ -10,10 +10,11 @@ import RecordingsList from "./recordingsList";
 import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "../ui/sheet";
+import { getAssetPath } from "@/lib/utils";
 
-const editIcon = "/assets/icons/Edit-icon.svg";
-const searchIcon = "/assets/icons/search-icon.svg";
-const sidebarCollapseIcon = "/assets/icons/sidebar-collapse-icon.svg";
+const editIcon = getAssetPath("/assets/icons/Edit-icon.svg");
+const searchIcon = getAssetPath("/assets/icons/search-icon.svg");
+const sidebarCollapseIcon = getAssetPath("/assets/icons/sidebar-collapse-icon.svg");
 
 const recordings = Array.from({ length: 7 }, (_, i) => ({
   id: `recording_20241217121419`,
