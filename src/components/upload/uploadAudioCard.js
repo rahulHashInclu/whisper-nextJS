@@ -29,7 +29,7 @@ export default function UploadAudioCard() {
             </div>Upload New Audio</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col justify-between items-start md:flex-row md:items-center gap-4 mb-4">
+          {/* <div className="flex flex-col justify-between items-start md:flex-row md:items-center gap-4 mb-4">
             <div className="flex flex-col justify-center gap-2">
               <Label className={themeStyles.text.label}>Record Audio</Label>
               <Button className="border border-[#FFFFFF29] bg-[#FFFFFF0D]">
@@ -43,7 +43,7 @@ export default function UploadAudioCard() {
                 <Button className="bg-[#D9D9D9] text-mainpage-bg">Connect</Button>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Drag & Drop section */}
           {/* <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">

@@ -11,9 +11,9 @@ export default function SignOutDropdown({username}){
             <DropdownMenuTrigger>
                 <TopRightAvatar userName={username}/>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-signupcard-bg border-none">
+            <DropdownMenuContent className="bg-signupcard-bg border">
                 <DropdownMenuLabel className="text-white">{username}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
+                {/* <DropdownMenuSeparator /> */}
                 <DropdownMenuItem className="text-white hover:text-black">
                     <LogOut />
                     <span>Sign Out</span>
