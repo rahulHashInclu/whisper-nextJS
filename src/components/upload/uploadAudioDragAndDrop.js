@@ -28,6 +28,7 @@ export default function UploadAudioDragAndDrop() {
   const [speakers, setSpeakers] = useState("");
   const [isConverting, setIsConverting] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const abortControlRef = useRef(null);
   // to cancel the conversion process when new file is selected
@@ -238,8 +239,39 @@ export default function UploadAudioDragAndDrop() {
     setSpeakers("");
   };
 
+  // drag and drop handling
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+  
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault;
+    e.stopPropagation();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if(file){
+        setSelectedFile(file);
+    }
+  }
+
+  // drag and drop end
+
   useEffect(() => {
-    handleAudioFileSelect();
+    if(selectedFile){
+        handleAudioFileSelect();
+    }
   }, [selectedFile]);
 
   return (
@@ -249,7 +281,7 @@ export default function UploadAudioDragAndDrop() {
         <ConnectWithMeet />
       </div>
 
-      <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">
+      <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center" onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} onDragEnter={handleDragEnter}>
         <div className="flex flex-col items-center gap-3">
           <Image src={uploadBgImg} width={80} height={80} alt="upload-img" />
           <p className="text-white text-lg">Drag & Drop or Upload your files</p>

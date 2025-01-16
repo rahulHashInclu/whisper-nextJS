@@ -4,9 +4,10 @@ import WaveSurfer from "wavesurfer.js";
 import { Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { getAssetPath } from "@/lib/utils";
 
-const video_forward_icon = "/assets/vid-10sec-forward-icon.svg";
-const video_backward_icon = "/assets/vid-10sec-backward-icon.svg";
+const video_forward_icon = getAssetPath("/assets/vid-10sec-forward-icon.svg");
+const video_backward_icon = getAssetPath("/assets/vid-10sec-backward-icon.svg");
 
 const formatTime = (timeInSeconds) => {
   const minutes = Math.floor(timeInSeconds / 60);

@@ -7,9 +7,11 @@ import { Button } from "../ui/button";
 import { AudioService } from "@/lib/audioService";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function RecordingsList({ recordings }){
 
+  const router = useRouter();
   const [fetchedRecordings, setFetchedRecordings] = useState({});
   const today = new Date();
   const weekAgo = subDays(today, 7);
@@ -93,6 +95,10 @@ export default function RecordingsList({ recordings }){
   testFetchedRecordings();
   //
 
+  const handleRecordingClick = (recordingId) => {
+    router.push(`/recording/${recordingId}`);
+  }
+
   useEffect(() => {
     getRecordings();
   }, [])
@@ -110,7 +116,7 @@ export default function RecordingsList({ recordings }){
               <h2 className="px-2 py-1.5 text-sm font-semibold text-white/70">{category}</h2>
               {fetchedRecordings[category].map((item) => ( 
                 <SidebarMenuItem key={item.id}>
-                <SidebarMenuButton asChild className="group relative flex h-14 flex-col items-start gap-0.5 rounded-lg px-2 py-1.5 hover:bg-white/5">
+                <SidebarMenuButton asChild className="group relative flex h-14 flex-col items-start gap-0.5 rounded-lg px-2 py-1.5 hover:bg-white/5" onClick={()=>handleRecordingClick(item.id)}>
                 <button>
                   <span className="text-sm font-medium text-white">{item.recordingname}</span>
                   <span className="text-xs text-white/50">

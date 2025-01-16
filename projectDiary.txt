@@ -10,4 +10,5 @@
 -- Build error happening with /upload because node.js not able to pre-render FFmpeg.wasm. I made all the components and even the page into 'use client' but didn't fix the issue. So going to try dynamic imports of FFmpeg
 -- Used dynamic import of FFmpeg to fix the build issue.
 -- Build issues are gone but runtime error occured with npm run start because NEXTAUTH_SECRET was not present
--- Setted up NEXTAUTH_SECRET in .env.local and issue resolved
+-- Setted up NEXTAUTH_SECRET in .env.local and issue resolved.
+-- download-audio api was returning 403 error. Not sure why. Request seems fine and first api call works but fetching from S3 is where we are having issues. Rithvik will check what's the issue.

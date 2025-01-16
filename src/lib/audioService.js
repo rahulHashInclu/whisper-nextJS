@@ -1,5 +1,5 @@
 import ApiClient from "./apiClient";
-import { GET_RECORDINGS, UPLOAD_AUDIO } from "@/helper/constants";
+import { GET_RECORDINGS, UPLOAD_AUDIO, DOWNLOAD_AUDIO, GET_TRANSCRIPTIONS } from "@/helper/constants";
 
 
 export const AudioService = {
@@ -15,5 +15,13 @@ export const AudioService = {
         return ApiClient.post(UPLOAD_AUDIO, formData, {
             isFormData: true
         })
+    },
+
+    getRecordingAudio: async (id) => {
+        return ApiClient.get(`${DOWNLOAD_AUDIO}/${id}`);
+    },
+
+    getTranscriptions: async (id) => {
+        return ApiClient.get(`${GET_TRANSCRIPTIONS}/${id}`)
     }
 }

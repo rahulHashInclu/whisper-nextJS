@@ -1,32 +1,51 @@
-'use client'
+"use client";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
+import { ScrollArea } from "../ui/scroll-area";
 
 
+export default function TranscriptTabContents({ messages, recordingId, transcriptionContent }) {
 
-export default function TranscriptTabContents({messages}){
+  const [speakers, setSpeakers] = useState([]);
 
-    return(
-        <div className="space-y-4">
-                      {messages.map((message) => (
-                        <div key={message.id} className="flex items-start gap-3">
-                          <Avatar className="h-8 w-8 bg-white/10">
-                            <AvatarFallback className="text-sm text-white bg-transparent">
-                              {message.sender.initials}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex flex-col gap-1">
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm font-medium text-white">
-                                {message.sender.name}
-                              </span>
-                              <span className="text-xs text-white/50">{message.timestamp}</span>
-                            </div>
-                            <div className="rounded-lg bg-[#FFFFFF0D] p-3">
-                              <p className="text-sm text-white">{message.content}</p>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-    )
+  const formatTime = (ms) => {
+    const date = new Date(ms * 1000);
+    const hours = date.getUTCHours().toString().padStart(2, "0");
+    const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+    const seconds = date.getUTCSeconds().toString().padStart(2, "0");
+
+    return `${hours}:${minutes}:${seconds}`;
+  };
+
+  return (
+    <ScrollArea className="h-72">
+    <div className="space-y-4 overflow-y-auto h-full">
+      {transcriptionContent.result?.map((segment, index) => {
+        const startTime = segment.start_time;
+        const endTime = segment.end_time;
+        const elapsedTime = formatTime(index === 0 ? 0 : startTime);
+        return (
+        <div key={index} className="flex items-start gap-3">
+          <Avatar className="h-8 w-8 bg-white/10">
+            <AvatarFallback className="text-sm text-white bg-transparent">
+              {/* {message.sender.initials} */}
+              SP
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-white">
+                {segment.speaker}
+              </span>
+              <span className="text-xs text-white/50">{elapsedTime}</span>
+            </div>
+            <div className="rounded-lg bg-[#FFFFFF0D] p-3">
+              <p className="text-sm text-white">{segment.translated_text}</p>
+            </div>
+          </div>
+        </div>
+      )})}
+    </div>
+    </ScrollArea>
+  );
 }
