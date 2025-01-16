@@ -101,7 +101,7 @@ export default function RecordingTranscript({recordingId}) {
           </TabsContent>
           <TabsContent value="ai-chat" className="p-4">
             {/* <div className="text-sm text-white/70">AI chat content here...</div> */}
-            <AiChatInterface />
+            <AiChatInterface recordingId={recordingId}/>
           </TabsContent>
         </Tabs>
       </CardContent>

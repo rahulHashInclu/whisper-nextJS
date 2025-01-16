@@ -1,5 +1,5 @@
 import ApiClient from "./apiClient";
-import { GET_RECORDINGS, UPLOAD_AUDIO, DOWNLOAD_AUDIO, GET_TRANSCRIPTIONS } from "@/helper/constants";
+import { GET_RECORDINGS, UPLOAD_AUDIO, DOWNLOAD_AUDIO, GET_TRANSCRIPTIONS, GET_AI_RESPONSE } from "@/helper/constants";
 
 
 export const AudioService = {
@@ -23,5 +23,11 @@ export const AudioService = {
 
     getTranscriptions: async (id) => {
         return ApiClient.get(`${GET_TRANSCRIPTIONS}/${id}`)
+    },
+
+    getAIResponse: async (query, recordingId) => {
+        const requestBody = {query, recording_id:recordingId};
+
+        return ApiClient.post(GET_AI_RESPONSE, requestBody)
     }
 }

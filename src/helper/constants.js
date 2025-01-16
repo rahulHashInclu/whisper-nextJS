@@ -6,6 +6,7 @@ const GET_RECORDINGS = `${BASE_URL}/get-recordings`;
 const UPLOAD_AUDIO = `${BASE_URL}/upload-audio`;
 const DOWNLOAD_AUDIO = `${BASE_URL}/download-audio`;
 const GET_TRANSCRIPTIONS = `${BASE_URL}/view-json`;
+const GET_AI_RESPONSE = `${BASE_URL}/query-search`;
 
 export {
     SIGN_UP,
@@ -14,5 +15,6 @@ export {
     UPLOAD_AUDIO,
     BASE_PATH,
     DOWNLOAD_AUDIO,
-    GET_TRANSCRIPTIONS
+    GET_TRANSCRIPTIONS,
+    GET_AI_RESPONSE
 }
