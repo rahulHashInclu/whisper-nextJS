@@ -8,6 +8,8 @@ import { AudioService } from "@/lib/audioService";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "../ui/skeleton";
+import { usePathname } from "next/navigation";
 
 export default function RecordingsList({ recordings }){
 
@@ -16,6 +18,9 @@ export default function RecordingsList({ recordings }){
   const today = new Date();
   const weekAgo = subDays(today, 7);
   const monthAgo = subDays(today, 30);
+  const [isLoading, setIsLoading] = useState(true);
+  const [activeId, setActiveId] = useState("");
+  // const pathName = usePathname();
 
   // for testing purpose
   const {status, data:session} = useSession();
@@ -65,6 +70,7 @@ export default function RecordingsList({ recordings }){
   }
 
   const getRecordings = async () => {
+    setIsLoading(true);
     try{
       const {data, ok} = await AudioService.getRecordings();
       if(ok){
@@ -77,25 +83,14 @@ export default function RecordingsList({ recordings }){
       console.error(err);
       throw err;
     }
-  }
-
-  // debug
-  console.log('Grouped recordings...', fetchedRecordings);
-  const testFetchedRecordings = () => {
-    if(Object.keys(fetchedRecordings).length > 0){
-      Object.keys(fetchedRecordings).filter((category) => fetchedRecordings[category].length > 0).map((category) => {
-        console.log("Categories array...", category);
-        fetchedRecordings[category].map((item) => {
-          console.log("Mapped item", item);
-        })
-      })
+    finally{
+      setIsLoading(false);
     }
-
   }
-  testFetchedRecordings();
-  //
+
 
   const handleRecordingClick = (recordingId) => {
+    setActiveId(recordingId);
     router.push(`/recording/${recordingId}`);
   }
 
@@ -103,11 +98,38 @@ export default function RecordingsList({ recordings }){
     getRecordings();
   }, [])
 
+  // useEffect(() => {
+  //   const recordingIdFromPath = pathName.split('/').pop();
+  //   if (recordingIdFromPath) {
+  //     setActiveId(recordingIdFromPath);
+  //   }
+  // }, [pathName]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-1 px-2">
+        <SidebarMenu>
+          {[1, 2].map((categoryIndex) => (
+            <div key={categoryIndex} className="flex flex-col gap-1">
+              <Skeleton className="h-6 w-32 bg-white/10 my-1.5" />
+              {[1, 2, 3].map((itemIndex) => (
+                <SidebarMenuItem key={itemIndex}>
+                  <div className="h-14 px-2 py-1.5">
+                    <Skeleton className="h-4 w-48 bg-white/10 mb-1" />
+                    <Skeleton className="h-3 w-32 bg-white/10" />
+                  </div>
+                </SidebarMenuItem>
+              ))}
+            </div>
+          ))}
+        </SidebarMenu>
+      </div>
+    );
+  }
+
 
     return(
         <div className="flex flex-col gap-1 px-2">
-        {/* junk text for testing */}
-        {/* <h2 className="px-2 py-1.5 text-sm font-semibold text-white/70">Previous 7 Days</h2> */}
         <SidebarMenu>
 
           {Object.keys(fetchedRecordings).length > 0 ? (
@@ -116,7 +138,8 @@ export default function RecordingsList({ recordings }){
               <h2 className="px-2 py-1.5 text-sm font-semibold text-white/70">{category}</h2>
               {fetchedRecordings[category].map((item) => ( 
                 <SidebarMenuItem key={item.id}>
-                <SidebarMenuButton asChild className="group relative flex h-14 flex-col items-start gap-0.5 rounded-lg px-2 py-1.5 hover:bg-white/5" onClick={()=>handleRecordingClick(item.id)}>
+                <SidebarMenuButton asChild className={`group relative flex h-14 flex-col items-start gap-0.5 rounded-lg px-2 py-1.5 
+  ${activeId === item.id ? 'bg-white/10' : 'hover:bg-white/5'}`} onClick={()=>handleRecordingClick(item.id)}>
                 <button>
                   <span className="text-sm font-medium text-white">{item.recordingname}</span>
                   <span className="text-xs text-white/50">
@@ -139,26 +162,6 @@ export default function RecordingsList({ recordings }){
           ):(
             <h3 className="px-2 py-1.5 text-sm font-semibold text-white/70">No recordings available</h3>
           )}
-          {/* {recordings?.map((recording) => (
-            <SidebarMenuItem key={recording?.id}>
-              <SidebarMenuButton asChild className="group relative flex h-14 flex-col items-start gap-0.5 rounded-lg px-2 py-1.5 hover:bg-white/5">
-                <button>
-                  <span className="text-sm font-medium text-white">{recording?.recordingname}</span>
-                  <span className="text-xs text-white/50">
-                    {format(recording.date, "MMM dd, yyyy • hh:mm a")}
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-1 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100"
-                  >
-                    <MoreHorizontal className="h-4 w-4 text-white/70" />
-                    <span className="sr-only">More options</span>
-                  </Button>
-                </button>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))} */}
         </SidebarMenu>
       </div>
     )

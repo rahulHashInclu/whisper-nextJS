@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { ScrollArea } from "../ui/scroll-area";
+import { Alert, AlertDescription } from "../ui/alert";
 
 
-export default function TranscriptTabContents({ messages, recordingId, transcriptionContent }) {
+export default function TranscriptTabContents({ recordingId, transcriptionContent }) {
 
   const [speakers, setSpeakers] = useState([]);
 
@@ -16,6 +17,36 @@ export default function TranscriptTabContents({ messages, recordingId, transcrip
 
     return `${hours}:${minutes}:${seconds}`;
   };
+
+  // Check if there's no transcription content or if it's empty
+  if (!transcriptionContent || Object.keys(transcriptionContent).length === 0) {
+    return (
+      <ScrollArea className="h-72">
+        <div className="p-4">
+          <Alert>
+            <AlertDescription>
+              Loading transcription data...
+            </AlertDescription>
+          </Alert>
+        </div>
+      </ScrollArea>
+    );
+  }
+
+  // Check if there's no result in transcriptionContent
+  if (!transcriptionContent.result || transcriptionContent.result.length === 0) {
+    return (
+      <ScrollArea className="h-72">
+        <div className="p-4">
+          <Alert variant="destructive">
+            <AlertDescription>
+              No transcription data available. Please try again later.
+            </AlertDescription>
+          </Alert>
+        </div>
+      </ScrollArea>
+    );
+  }
 
   return (
     <ScrollArea className="h-72">

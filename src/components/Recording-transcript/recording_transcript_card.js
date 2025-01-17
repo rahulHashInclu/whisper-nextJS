@@ -4,7 +4,6 @@ import { MoreHorizontal, Search } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Card, CardHeader, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
-import { Avatar, AvatarFallback } from "../ui/avatar";
 import TranscriptTabContents from "./transcript_tabcontent";
 import { useEffect, useState } from "react";
 import { AudioService } from "@/lib/audioService";
@@ -29,10 +28,12 @@ export default function RecordingTranscript({recordingId}) {
                 }
                 else{
                   console.log('Couldnt fetch transcriptions');
+                  setFetchedTranscriptionData({ result: [] });
                 }
             }
         }
         catch(err){
+          setFetchedTranscriptionData({ result: [] });
           console.error('Failed to fetch transcriptions...', err);
         }
     }
@@ -41,18 +42,6 @@ export default function RecordingTranscript({recordingId}) {
       fetchAudioTranscriptions();
     }, [recordingId])
   
-  const messages = [
-    {
-      id: "1",
-      sender: {
-        name: "David Shim",
-        initials: "DS",
-      },
-      content:
-        "Hi Jordan, I've been thinking about expanding our services. Do you think there's an untapped market we should explore?",
-      timestamp: "[03:24]",
-    },
-  ];
 
   return (
     <Card className="w-full max-w-3xl bg-signupcard-bg border-0 shadow-xl rounded-2xl max-h-[70vh]">
@@ -92,7 +81,7 @@ export default function RecordingTranscript({recordingId}) {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="transcript" className="p-4 h-full overflow-hidden">
-            <TranscriptTabContents messages={messages} recordingId={recordingId} transcriptionContent={fetchedTranscriptionData}/>
+            <TranscriptTabContents recordingId={recordingId} transcriptionContent={fetchedTranscriptionData}/>
           </TabsContent>
           <TabsContent value="minutes" className="p-4 h-[calc(100%-3rem)]">
             <div className="text-sm text-white/70">
@@ -100,7 +89,6 @@ export default function RecordingTranscript({recordingId}) {
             </div>
           </TabsContent>
           <TabsContent value="ai-chat" className="p-4">
-            {/* <div className="text-sm text-white/70">AI chat content here...</div> */}
             <AiChatInterface recordingId={recordingId}/>
           </TabsContent>
         </Tabs>

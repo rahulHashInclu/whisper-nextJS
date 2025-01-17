@@ -2,9 +2,14 @@
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuItem, DropdownMenuSeparator } from "../ui/dropdown-menu";
 import TopRightAvatar from "../custom-ui/avatar";
 import { LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 
 export default function SignOutDropdown({username}){
+
+    // const handleSignOut = async () => {
+    //     await signOut();
+    // }
 
     return(
         <DropdownMenu>

@@ -7,6 +7,7 @@ import TopRightAvatar from "../custom-ui/avatar";
 import { useSession } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
 import { AudioService } from "@/lib/audioService";
+import { Alert, AlertDescription } from "../ui/alert";
 
 
 export default function AiChatInterface({ recordingId }) {
@@ -97,6 +98,15 @@ export default function AiChatInterface({ recordingId }) {
     <>
       <ScrollArea className="h-64 md:px-2" ref={scrollAreaRef}>
         <div className="space-y-3">
+        {messages.length === 0 && (
+            <div className="p-4">
+              <Alert className="bg-uploadInput-bg border-0">
+                <AlertDescription className="text-white">
+                  Ask your questions about the meeting
+                </AlertDescription>
+              </Alert>
+            </div>
+          )}
           {messages.map((message) => (
             <div
               key={message.id}
