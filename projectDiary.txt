@@ -1,0 +1,14 @@
+31-12-2024 -- rahul
+-- signup component is split into UI and interactivity (signUpForm) components
+-- Created styleClasses directory to get classnames (With styles ofc) for reuse
+
+13-01-2025 -- rahul
+-- FFmpeg web worker error was resolved by disabling turbopack and switching to webpack
+
+16-01-2025 -- rahul
+-- Used getAssetPath in util to fetch basepath and fetch static assets using that. To change basepath, simply go to helper/constants and change the BASE_PATH. But I have not yet added this dynamic setting in next.config.mjs and also on SessionProvider in providers.js
+-- Build error happening with /upload because node.js not able to pre-render FFmpeg.wasm. I made all the components and even the page into 'use client' but didn't fix the issue. So going to try dynamic imports of FFmpeg
+-- Used dynamic import of FFmpeg to fix the build issue.
+-- Build issues are gone but runtime error occured with npm run start because NEXTAUTH_SECRET was not present
+-- Setted up NEXTAUTH_SECRET in .env.local and issue resolved.
+-- download-audio api was returning 403 error. Not sure why. Request seems fine and first api call works but fetching from S3 is where we are having issues. Rithvik will check what's the issue.
