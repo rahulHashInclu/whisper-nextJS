@@ -8,15 +8,27 @@ import TranscriptTabContents from "./transcript_tabcontent";
 import { useEffect, useState } from "react";
 import { AudioService } from "@/lib/audioService";
 import AiChatInterface from "./ai_chat_tabcontent";
+import MeetingMinutes from "./meeting_minutes_tabcontent";
 
 
 const tabs_trigger_style = "border-b-2 border-transparent data-[state=active]:border-b-white data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:rounded-none data-[state=active]:text-white";
 
-// pass the following as props
-// recording_id, recording_name
-export default function RecordingTranscript({recordingId}) {
+
+export default function RecordingTranscript({recordingId, onTimelineUpdate}) {
 
     const [fetchedTranscriptionData, setFetchedTranscriptionData] = useState({});
+
+    const handleDataUpdate = (apiData) => {
+      const timelineData ={
+          segments: apiData?.result,
+          numSpeakers: apiData?.num_speakers, // or however you determine this
+          totalDuration: 90 // or your actual duration
+        };
+        console.log('Timeline data from recording transcript...', timelineData);
+        onTimelineUpdate(timelineData);
+    };
+    
+    
 
     const fetchAudioTranscriptions = async () => {
         try{
@@ -25,6 +37,7 @@ export default function RecordingTranscript({recordingId}) {
                 console.log('Fteched transcriptions..', response);
                 if(response?.ok && response?.status === 200){
                   setFetchedTranscriptionData(response?.data?.result);
+                  handleDataUpdate(response?.data?.result)
                 }
                 else{
                   console.log('Couldnt fetch transcriptions');
@@ -84,9 +97,10 @@ export default function RecordingTranscript({recordingId}) {
             <TranscriptTabContents recordingId={recordingId} transcriptionContent={fetchedTranscriptionData}/>
           </TabsContent>
           <TabsContent value="minutes" className="p-4 h-[calc(100%-3rem)]">
-            <div className="text-sm text-white/70">
+            {/* <div className="text-sm text-white/70">
               Meeting minutes content here...
-            </div>
+            </div> */}
+            <MeetingMinutes recordingId={recordingId}/>
           </TabsContent>
           <TabsContent value="ai-chat" className="p-4">
             <AiChatInterface recordingId={recordingId}/>

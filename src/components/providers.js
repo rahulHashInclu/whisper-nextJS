@@ -8,8 +8,8 @@ export default function Providers({children}){
     const sessionBasepath = `${BASE_PATH}/api/auth`
     return(
         <SessionProvider basePath={sessionBasepath}>
-            <Toaster position="bottom-right" />
-            {children}
+                <Toaster position="bottom-right" />
+                {children}
         </SessionProvider>
     )
 }
