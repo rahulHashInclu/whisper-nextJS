@@ -19,10 +19,18 @@ export default function RecordingTranscript({recordingId, onTimelineUpdate}) {
     const [fetchedTranscriptionData, setFetchedTranscriptionData] = useState({});
 
     const handleDataUpdate = (apiData) => {
+      const segments = apiData?.result;
+      // Get total duration from last segments end_time
+      const totalDuration = segments && segments.length > 0 
+        ? segments[segments.length - 1].end_time 
+        : 0;
+    
       const timelineData ={
-          segments: apiData?.result,
+          segments: segments,
           numSpeakers: apiData?.num_speakers, // or however you determine this
-          totalDuration: 90 // or your actual duration
+          speakersList: apiData?.speaker_list,
+          totalDuration: totalDuration,
+          jsonPath: apiData?.json_file
         };
         console.log('Timeline data from recording transcript...', timelineData);
         onTimelineUpdate(timelineData);

@@ -2,10 +2,10 @@
 'use client';
 import { createContext, useContext, useState } from "react";
 
-const TimelineContext = createContext(); // Changed from TimeLineContext
+const TimelineContext = createContext();
 
-export function TimelineProvider({ children }) { // Changed from TimeLineProvider
-  const [timelineData, setTimelineData] = useState({ // This is correct
+export function TimelineProvider({ children }) { 
+  const [timelineData, setTimelineData] = useState({ 
     segments: [],
     numSpeakers: 0,
     totalDuration: 0

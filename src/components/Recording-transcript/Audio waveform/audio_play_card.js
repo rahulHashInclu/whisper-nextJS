@@ -11,7 +11,7 @@ const testAudio = getAssetPath('/assets/test_speech_audio.mp3');
 
 export default function AudioPlayCard({recordingId, timelineData}){
 
-    const { segments, numSpeakers, totalDuration } = timelineData;
+    const { segments, numSpeakers, speakersList, totalDuration, jsonPath } = timelineData;
 
 
     const downloadAudio = async () => {
@@ -38,7 +38,10 @@ export default function AudioPlayCard({recordingId, timelineData}){
                 <InteractiveAudioWaveform audioUrl={testAudio}/>
                 <DynamicSpeakerTimeline segments={segments}
       numSpeakers={numSpeakers}
-      totalDuration={totalDuration}/>
+      speakersList={speakersList}
+      totalDuration={totalDuration}
+        jsonPath={jsonPath}
+      />
             </CardContent>
         </Card>
         
