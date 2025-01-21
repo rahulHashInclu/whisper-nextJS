@@ -14,9 +14,13 @@ import MeetingMinutes from "./meeting_minutes_tabcontent";
 const tabs_trigger_style = "border-b-2 border-transparent data-[state=active]:border-b-white data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:rounded-none data-[state=active]:text-white";
 
 
-export default function RecordingTranscript({recordingId, onTimelineUpdate}) {
+export default function RecordingTranscript({recordingId, onTimelineUpdate, transcriptFetchData}) {
 
     const [fetchedTranscriptionData, setFetchedTranscriptionData] = useState({});
+
+    if(transcriptFetchData){
+      console.log('Transcript fetch data...', transcriptFetchData);
+    }
 
     const handleDataUpdate = (apiData) => {
       const segments = apiData?.result;
@@ -68,7 +72,8 @@ export default function RecordingTranscript({recordingId, onTimelineUpdate}) {
     <Card className="w-full max-w-3xl bg-signupcard-bg border-0 shadow-xl rounded-2xl max-h-[70vh]">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <h2 className="text-base font-semibold text-white">
-          {fetchedTranscriptionData?.recordingname ? fetchedTranscriptionData?.recordingname : 'Loading...'}
+          {/* {fetchedTranscriptionData?.recordingname ? fetchedTranscriptionData?.recordingname : 'Loading...'} */}
+          {transcriptFetchData?.recordingname ? transcriptFetchData?.recordingname : 'Loading...'}
         </h2>
         <div className="flex items-center gap-2">
           <Button
@@ -102,7 +107,8 @@ export default function RecordingTranscript({recordingId, onTimelineUpdate}) {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="transcript" className="p-4 h-full overflow-hidden">
-            <TranscriptTabContents recordingId={recordingId} transcriptionContent={fetchedTranscriptionData}/>
+            {/* <TranscriptTabContents recordingId={recordingId} transcriptionContent={fetchedTranscriptionData}/> */}
+            <TranscriptTabContents recordingId={recordingId} transcriptionContent={transcriptFetchData}/>
           </TabsContent>
           <TabsContent value="minutes" className="p-4 h-[calc(100%-3rem)]">
             {/* <div className="text-sm text-white/70">

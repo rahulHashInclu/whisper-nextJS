@@ -165,7 +165,6 @@ export default function UploadAudioDragAndDrop() {
           });
           if (finalFile) {
             // debug
-            console.log("FINAL file ready...");
             console.log("Final file...", finalFile);
           }
           //
@@ -222,9 +221,10 @@ export default function UploadAudioDragAndDrop() {
 
       const response = await AudioService.uploadAudio(audioFile, speakers);
       console.log("Upload audio reponse...", response); // debug
-      // if (response?.ok) {
-      //     // Handle success
-      // }
+      if (response?.ok) {
+          // Handle success
+          toast.success("Audio uploaded successfully");
+      }
     } catch (err) {
       toast.error("Error in uploading audio, please try again");
     }
@@ -329,6 +329,7 @@ export default function UploadAudioDragAndDrop() {
             type="file"
             ref={fileInputRef}
             onChange={handleFileSelect}
+            accept=".wav, .mp3"
             style={{ display: "none" }}
           />
         </div>

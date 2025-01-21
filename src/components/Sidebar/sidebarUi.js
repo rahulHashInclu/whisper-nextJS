@@ -36,7 +36,9 @@ export default function SidebarUi() {
         </Button>)}
         <div className="flex items-center gap-6 md:gap-4">
           <img src={searchIcon} alt="search-icon" />
-          <img src={editIcon} alt="edit-icon" />
+          <button>
+            <img src={editIcon} alt="edit-icon" />
+          </button>
         </div>
       </SidebarHeader>
       <SidebarSeparator />

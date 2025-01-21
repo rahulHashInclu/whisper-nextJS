@@ -9,7 +9,7 @@ import DynamicSpeakerTimeline from "./speaker_bars";
 
 const testAudio = getAssetPath('/assets/test_speech_audio.mp3');
 
-export default function AudioPlayCard({recordingId, timelineData}){
+export default function AudioPlayCard({recordingId, timelineData, onSpeakerUpdate, isLoading}){
 
     const { segments, numSpeakers, speakersList, totalDuration, jsonPath } = timelineData;
 
@@ -41,6 +41,8 @@ export default function AudioPlayCard({recordingId, timelineData}){
       speakersList={speakersList}
       totalDuration={totalDuration}
         jsonPath={jsonPath}
+        onSpeakerUpdate={onSpeakerUpdate}
+        isLoading={isLoading}
       />
             </CardContent>
         </Card>
