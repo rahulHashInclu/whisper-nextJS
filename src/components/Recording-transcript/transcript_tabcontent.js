@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { ScrollArea } from "../ui/scroll-area";
 import { Alert, AlertDescription } from "../ui/alert";
+import { getUserInitials } from "@/lib/utils";
 
 
-export default function TranscriptTabContents({ recordingId, transcriptionContent }) {
+export default function TranscriptTabContents({ recordingId, transcriptionContent, transcriptFetchingError }) {
 
   const [speakers, setSpeakers] = useState([]);
 
@@ -17,6 +18,20 @@ export default function TranscriptTabContents({ recordingId, transcriptionConten
 
     return `${hours}:${minutes}:${seconds}`;
   };
+
+  if(transcriptFetchingError) {
+    return (
+      <ScrollArea className="h-72">
+        <div className="p-4">
+          <Alert variant="destructive">
+            <AlertDescription>
+              {transcriptFetchingError}
+            </AlertDescription>
+          </Alert>
+        </div>
+      </ScrollArea>
+    );
+  }
 
   // Check if there's no transcription content or if it's empty
   if (!transcriptionContent || Object.keys(transcriptionContent).length === 0) {
@@ -51,7 +66,7 @@ export default function TranscriptTabContents({ recordingId, transcriptionConten
   return (
     <ScrollArea className="h-72">
     <div className="space-y-4 overflow-y-auto h-full">
-      {transcriptionContent.result?.map((segment, index) => {
+      {transcriptionContent?.result?.map((segment, index) => {
         const startTime = segment.start_time;
         const endTime = segment.end_time;
         const elapsedTime = formatTime(index === 0 ? 0 : startTime);
@@ -59,8 +74,7 @@ export default function TranscriptTabContents({ recordingId, transcriptionConten
         <div key={index} className="flex items-start gap-3">
           <Avatar className="h-8 w-8 bg-white/10">
             <AvatarFallback className="text-sm text-white bg-transparent">
-              {/* {message.sender.initials} */}
-              SP
+              {getUserInitials(segment.speaker)}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-1">

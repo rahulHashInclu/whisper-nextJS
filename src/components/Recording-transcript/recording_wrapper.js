@@ -15,6 +15,7 @@ export function RecordingWrapper({recordingId}){
     });
     const [transcriptData, setTranscriptData] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+    const [transcriptFetchingError, setTranscriptFetchingError] = useState("");
 
     const handleDataUpdate = (apiData) => {
         const segments = apiData?.result;
@@ -47,6 +48,12 @@ export function RecordingWrapper({recordingId}){
             handleDataUpdate(response?.data?.result);
             setIsLoading(false);
           }
+          else{
+            console.log('Couldnt fetch transcriptions');
+            setTranscriptData({ result: [] });
+            setIsLoading(false);
+            setTranscriptFetchingError("Could not fetch transcription data at the moment. Please try again later.");
+          }
         } catch (error) {
           console.error('Error refreshing transcription data:', error);
           setIsLoading(false);
@@ -64,7 +71,7 @@ export function RecordingWrapper({recordingId}){
     return(
         <div className="h-full flex flex-col justify-start py-4 gap-4 items-center px-2 md:px-0 overflow-auto">
             <AudioPlayCard recordingId={recordingId} timelineData={timelineData} onSpeakerUpdate={refreshTranscriptionData} isLoading={isLoading}/>
-            <RecordingTranscript recordingId={recordingId} onTimelineUpdate={setTimelineData} transcriptFetchData={transcriptData}/>
+            <RecordingTranscript recordingId={recordingId} onTimelineUpdate={setTimelineData} transcriptFetchData={transcriptData} transcriptFetchingError={transcriptFetchingError}/>
         </div>
     )
 }

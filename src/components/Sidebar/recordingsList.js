@@ -10,6 +10,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "../ui/skeleton";
 import { usePathname } from "next/navigation";
+import { useTimeline } from "@/context/audioContext";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 export default function RecordingsList({ recordings }) {
   const router = useRouter();
@@ -19,6 +21,7 @@ export default function RecordingsList({ recordings }) {
   const monthAgo = subDays(today, 30);
   const [isLoading, setIsLoading] = useState(true);
   const [activeId, setActiveId] = useState("");
+  const { refreshSidebar } = useTimeline();
   // const pathName = usePathname();
 
   // for testing purpose
@@ -92,12 +95,9 @@ export default function RecordingsList({ recordings }) {
     getRecordings();
   }, []);
 
-  // useEffect(() => {
-  //   const recordingIdFromPath = pathName.split('/').pop();
-  //   if (recordingIdFromPath) {
-  //     setActiveId(recordingIdFromPath);
-  //   }
-  // }, [pathName]);
+  useEffect(() => {
+    getRecordings();
+  }, [refreshSidebar]);
 
   if (isLoading) {
     return (
@@ -136,7 +136,7 @@ export default function RecordingsList({ recordings }) {
                   <SidebarMenuItem key={item.id}>
                     <SidebarMenuButton
                       asChild
-                      className={`group relative flex h-14 flex-col items-start gap-0.5 rounded-lg px-2 py-1.5 
+                      className={`group relative flex h-14 flex-col items-start gap-0.5 rounded-lg hover:bg-white/5 px-2 py-1.5 
   ${activeId === item.id ? "bg-white/10" : "hover:bg-white/5"}`}
                       onClick={() => handleRecordingClick(item.id)}
                     >

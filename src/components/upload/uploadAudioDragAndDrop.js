@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import AudioRecorder from "./recordAudio";
 import ConnectWithMeet from "./connectWithMeet";
 import { getAssetPath } from "@/lib/utils";
+import { useTimeline } from "@/context/audioContext";
 
 const uploadBgImg = getAssetPath("/assets/upload-bgImg.png");
 const googleDriveIcon = getAssetPath("/assets/icons/cloud-drive-icon.svg");
@@ -29,8 +30,10 @@ export default function UploadAudioDragAndDrop() {
   const [isConverting, setIsConverting] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const abortControlRef = useRef(null);
+  const { refreshSidebarData } = useTimeline();
   // to cancel the conversion process when new file is selected
   const cancelConverion = () => {
     if (abortControlRef.current) {
@@ -201,6 +204,7 @@ export default function UploadAudioDragAndDrop() {
   };
 
   const handleAudioUpload = async () => {
+    setIsUploading(true);
     try {
       if (!audioFile) {
         setError("No file to upload");
@@ -224,9 +228,14 @@ export default function UploadAudioDragAndDrop() {
       if (response?.ok) {
           // Handle success
           toast.success("Audio uploaded successfully");
+          setIsUploading(false);
+          setSpeakers("");
+          setAudioFile(null);
+          refreshSidebarData();
       }
     } catch (err) {
       toast.error("Error in uploading audio, please try again");
+      setIsUploading(false);
     }
   };
 
@@ -285,13 +294,13 @@ export default function UploadAudioDragAndDrop() {
         <div className="flex flex-col items-center gap-3">
           <Image src={uploadBgImg} width={80} height={80} alt="upload-img" />
           <p className="text-white text-lg">Drag & Drop or Upload your files</p>
-          <Button
+          {!audioFile && (<Button
             variant="outline"
             className="bg-white text-black flex gap-2 hover:bg-gray-100"
           >
             <img src={googleDriveIcon} alt="Google Drive" className="w-5 h-5" />
             Select from drive
-          </Button>
+          </Button>)}
           {!audioFile && (
             <Button
               variant="link"
@@ -318,8 +327,8 @@ export default function UploadAudioDragAndDrop() {
                 value={speakers}
                 onChange={handleSpeakerChange}
               />
-              <Button disabled={!speakers} onClick={handleAudioUpload}>
-                Upload
+              <Button disabled={!speakers || isUploading} onClick={handleAudioUpload}>
+                {isUploading ? 'Uploading' : 'Upload'}
               </Button>
               <Button onClick={handleCancelUpload}>Cancel</Button>
             </div>

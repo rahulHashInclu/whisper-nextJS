@@ -11,6 +11,7 @@ import { Input } from "../ui/input";
 import { getAssetPath } from "@/lib/utils";
 
 const zoomIcon = getAssetPath("/assets/icons/zoom-icon.png");
+const googleMeetIcon = getAssetPath("/assets/icons/google_meet_icon.png");
 
 export default function UploadMeetUrlInput() {
   // Add other media options here
@@ -22,6 +23,7 @@ export default function UploadMeetUrlInput() {
     },
     {
       mediaName: "Google meet",
+      mediaIcon: googleMeetIcon,
     },
   ];
 
@@ -47,11 +49,12 @@ export default function UploadMeetUrlInput() {
             <SelectValue placeholder="Select platform" />
           </div>
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-signupcard-bg hover:bg-[#4C4C4C]">
           {meetingMediaSelectOptions.map((item) => (
             <SelectItem
               key={item.mediaName}
               value={item.mediaName.toLowerCase()}
+              className="bg-signupcard-bg hover:bg-[#4C4C4C]"
             >
               <div className="flex items-center gap-2">
                 <img
@@ -59,7 +62,7 @@ export default function UploadMeetUrlInput() {
                   alt={`${item.mediaName}-icon`}
                   className="w-6 h-6"
                 />
-                {item.mediaName}
+                <p className="text-sm text-white">{item.mediaName}</p>
               </div>
             </SelectItem>
           ))}

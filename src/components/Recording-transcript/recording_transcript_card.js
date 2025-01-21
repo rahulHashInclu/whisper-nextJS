@@ -14,7 +14,7 @@ import MeetingMinutes from "./meeting_minutes_tabcontent";
 const tabs_trigger_style = "border-b-2 border-transparent data-[state=active]:border-b-white data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:rounded-none data-[state=active]:text-white";
 
 
-export default function RecordingTranscript({recordingId, onTimelineUpdate, transcriptFetchData}) {
+export default function RecordingTranscript({recordingId, onTimelineUpdate, transcriptFetchData, transcriptFetchingError}) {
 
     const [fetchedTranscriptionData, setFetchedTranscriptionData] = useState({});
 
@@ -63,9 +63,9 @@ export default function RecordingTranscript({recordingId, onTimelineUpdate, tran
         }
     }
 
-    useEffect(()=>{
-      fetchAudioTranscriptions();
-    }, [recordingId])
+    // useEffect(()=>{
+    //   fetchAudioTranscriptions();
+    // }, [recordingId])
   
 
   return (
@@ -108,7 +108,7 @@ export default function RecordingTranscript({recordingId, onTimelineUpdate, tran
           </TabsList>
           <TabsContent value="transcript" className="p-4 h-full overflow-hidden">
             {/* <TranscriptTabContents recordingId={recordingId} transcriptionContent={fetchedTranscriptionData}/> */}
-            <TranscriptTabContents recordingId={recordingId} transcriptionContent={transcriptFetchData}/>
+            <TranscriptTabContents recordingId={recordingId} transcriptionContent={transcriptFetchData} transcriptFetchingError={transcriptFetchingError}/>
           </TabsContent>
           <TabsContent value="minutes" className="p-4 h-[calc(100%-3rem)]">
             {/* <div className="text-sm text-white/70">

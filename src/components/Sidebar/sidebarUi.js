@@ -11,6 +11,7 @@ import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "../ui/sheet";
 import { getAssetPath } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const editIcon = getAssetPath("/assets/icons/Edit-icon.svg");
 const searchIcon = getAssetPath("/assets/icons/search-icon.svg");
@@ -23,6 +24,11 @@ const recordings = Array.from({ length: 7 }, (_, i) => ({
 
 export default function SidebarUi() {
   const { open, setOpen, toggleSidebar, isMobile } = useSidebar();
+  const router = useRouter();
+
+  const handleUploadRedirectionClick = () => {
+    router.push("/upload");
+  }
 
   const SideBarContent = (
     <>
@@ -36,7 +42,7 @@ export default function SidebarUi() {
         </Button>)}
         <div className="flex items-center gap-6 md:gap-4">
           <img src={searchIcon} alt="search-icon" />
-          <button>
+          <button onClick={handleUploadRedirectionClick}>
             <img src={editIcon} alt="edit-icon" />
           </button>
         </div>

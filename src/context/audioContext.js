@@ -10,13 +10,18 @@ export function TimelineProvider({ children }) {
     numSpeakers: 0,
     totalDuration: 0
   });
+  const [refreshSidebar, setRefreshSidebar] = useState(false);
 
   const updateTimelineData = (data) => {
     setTimelineData(data);
   };
 
+  const refreshSidebarData = () => {
+    setRefreshSidebar(!refreshSidebar);
+  }
+
   return (
-    <TimelineContext.Provider value={{ timelineData, updateTimelineData }}>
+    <TimelineContext.Provider value={{ timelineData, updateTimelineData, refreshSidebarData, refreshSidebar }}>
       {children}
     </TimelineContext.Provider>
   );

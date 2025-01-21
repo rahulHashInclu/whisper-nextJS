@@ -54,3 +54,11 @@ export function formValidation({email, password}){
 export function getAssetPath(path){
   return `${BASE_PATH}${path}`
 }
+
+export const getUserInitials = (userName) => {
+  if(userName){
+      const userAvatarFallback = userName.charAt(0)+userName.charAt(1);
+      return userAvatarFallback.toUpperCase();
+  }
+  return 'NA';
+}

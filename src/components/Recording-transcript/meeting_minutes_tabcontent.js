@@ -113,15 +113,15 @@ export default function MeetingMinutes({ recordingId }) {
 
   return (
     <ScrollArea className="h-72 w-full">
-      <div className="space-y-6 p-6">
+      <div className="space-y-6">
         {/* Attendees Section */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-4">Attendees</h2>
+          <h5 className="text-lg font-semibold text-white mb-4">Attendees</h5>
           <div className="flex flex-wrap gap-2">
             {isLoading ? (
               <div className="flex gap-2">
-                <Skeleton className="h-8 w-24 bg-gray-800" />
-                <Skeleton className="h-8 w-24 bg-gray-800" />
+                <Skeleton className="h-8 w-24 bg-[#FFFFFF0D]" />
+                <Skeleton className="h-8 w-24 bg-[#FFFFFF0D]" />
               </div>
             ) : (
               minutesData?.attendees?.map((attendee, index) => (
@@ -131,7 +131,6 @@ export default function MeetingMinutes({ recordingId }) {
                   className="bg-gray-800 text-white border-gray-700 flex items-center gap-2"
                 >
                   {attendee}
-                  <Pencil className="h-3 w-3" />
                 </Badge>
               ))
             )}
@@ -140,13 +139,13 @@ export default function MeetingMinutes({ recordingId }) {
 
         {/* Key Events Section */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-4">Key Events</h2>
+          <h5 className="text-lg font-semibold text-white mb-4">Key Events</h5>
           {isLoading ? (
             <div className="space-y-2">
-              <Skeleton className="h-8 w-full bg-gray-800" />
+              <Skeleton className="h-8 w-full bg-[#FFFFFF0D]" />
             </div>
           ) : (
-            <Card className="bg-gray-800/50 border-gray-700 p-4">
+            <Card className="bg-[#FFFFFF0D] border-gray-700 p-4">
             {minutesData?.key_events?.length > 0 ? (
                 <ul className="list-disc pl-6 space-y-2 text-white">
               {minutesData?.key_events?.map((action, index) => (
@@ -162,13 +161,13 @@ export default function MeetingMinutes({ recordingId }) {
 
         {/* Meeting Introduction */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-4">Meeting Introduction</h2>
+          <h5 className="text-lg font-semibold text-white mb-4">Meeting Introduction</h5>
           {isLoading ? (
             <div className="space-y-2">
-              <Skeleton className="h-20 w-full bg-gray-800" />
+              <Skeleton className="h-20 w-full bg-[#FFFFFF0D]" />
             </div>
           ) : (
-            <Card className="bg-gray-800/50 border-gray-700 p-4">
+            <Card className="bg-[#FFFFFF0D] border-gray-700 p-4">
               <p className="text-white">{minutesData?.starts_with || 'No introduction available'}</p>
             </Card>
           )}
@@ -176,13 +175,13 @@ export default function MeetingMinutes({ recordingId }) {
 
         {/* Conclusions */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-4">Conclusions</h2>
+          <h5 className="text-lg font-semibold text-white mb-4">Conclusions</h5>
           {isLoading ? (
             <div className="space-y-2">
-              <Skeleton className="h-24 w-full bg-gray-800" />
+              <Skeleton className="h-24 w-full bg-[#FFFFFF0D]" />
             </div>
           ) : (
-            <Card className="bg-gray-800/50 border-gray-700 p-4">
+            <Card className="bg-[#FFFFFF0D] border-gray-700 p-4">
               <p className="text-white">{minutesData?.conclusions || 'No conclusions available'}</p>
             </Card>
           )}
@@ -190,13 +189,13 @@ export default function MeetingMinutes({ recordingId }) {
 
         {/* Next Actions */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-4">Next Actions</h2>
+          <h5 className="text-lg font-semibold text-white mb-4">Next Actions</h5>
           {isLoading ? (
             <div className="space-y-2">
-              <Skeleton className="h-8 w-full bg-gray-800" />
+              <Skeleton className="h-8 w-full bg-[#FFFFFF0D]" />
             </div>
           ) : (
-            <Card className="bg-gray-800/50 border-gray-700 p-4">
+            <Card className="bg-[#FFFFFF0D] border-gray-700 p-4">
             {minutesData?.next_actions?.length > 0 ? (
                 <ul className="list-disc pl-6 space-y-2 text-white">
               {minutesData?.next_actions?.map((action, index) => (
@@ -212,13 +211,13 @@ export default function MeetingMinutes({ recordingId }) {
 
         {/* Promises Given */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-4">Promises Given</h2>
+          <h5 className="text-lg font-semibold text-white mb-4">Promises Given</h5>
           {isLoading ? (
             <div className="space-y-2">
-              <Skeleton className="h-8 w-full bg-gray-800" />
+              <Skeleton className="h-8 w-full bg-[#FFFFFF0D]" />
             </div>
           ) : (
-            <Card className="bg-gray-800/50 border-gray-700 p-4">
+            <Card className="bg-[#FFFFFF0D] border-gray-700 p-4">
             {minutesData?.promises_given?.length > 0 ? (
                 <ul className="list-disc pl-6 space-y-2 text-white">
               {minutesData?.promises_given?.map((action, index) => (
@@ -234,13 +233,13 @@ export default function MeetingMinutes({ recordingId }) {
 
         {/* Summary */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-4">Summary</h2>
+          <h5 className="text-base font-semibold text-white mb-4">Summary</h5>
           {isLoading ? (
             <div className="space-y-2">
-              <Skeleton className="h-24 w-full bg-gray-800" />
+              <Skeleton className="h-24 w-full bg-[#FFFFFF0D]" />
             </div>
           ) : (
-            <Card className="bg-gray-800/50 border-gray-700 p-4">
+            <Card className="bg-[#FFFFFF0D] border-gray-700 p-4">
               <p className="text-white">{minutesData?.summary || 'No Summary available'}</p>
             </Card>
           )}
