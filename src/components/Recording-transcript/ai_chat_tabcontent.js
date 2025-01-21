@@ -8,7 +8,10 @@ import { useSession } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
 import { AudioService } from "@/lib/audioService";
 import { Alert, AlertDescription } from "../ui/alert";
+import { getAssetPath } from "@/lib/utils";
+import Image from "next/image";
 
+const aiChatBottomIcon = getAssetPath("/assets/icons/AI_chat_input_icon.svg");
 
 export default function AiChatInterface({ recordingId }) {
   const { data: session } = useSession();
@@ -148,6 +151,7 @@ export default function AiChatInterface({ recordingId }) {
 
       <div className="p-4">
         <div className="flex gap-2">
+          <Image src={aiChatBottomIcon} alt="AI chat icon" width={18} height={18} className="drop-shadow-[0_0_8px_rgba(236,72,153,0.7)]"/>
           <Input
             placeholder="Ask your question"
             className="flex-1 bg-uploadInput-bg border-0 text-white placeholder:text-gray-500"
