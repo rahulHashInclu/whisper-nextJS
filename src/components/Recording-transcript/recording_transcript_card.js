@@ -9,7 +9,9 @@ import { useEffect, useState } from "react";
 import { AudioService } from "@/lib/audioService";
 import AiChatInterface from "./ai_chat_tabcontent";
 import MeetingMinutes from "./meeting_minutes_tabcontent";
+import { getAssetPath } from "@/lib/utils";
 
+const AI_chat_icon = getAssetPath('/assets/icons/AI_chat_icon.svg');
 
 const tabs_trigger_style = "border-b-2 border-transparent data-[state=active]:border-b-white data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:rounded-none data-[state=active]:text-white";
 
@@ -103,7 +105,7 @@ export default function RecordingTranscript({recordingId, onTimelineUpdate, tran
               Meeting Minutes
             </TabsTrigger>
             <TabsTrigger value="ai-chat" className={tabs_trigger_style}>
-              AI Chat
+              <span><img src={AI_chat_icon} alt="aiChatIcon" className="pr-1"/></span>AI Chat
             </TabsTrigger>
           </TabsList>
           <TabsContent value="transcript" className="p-4 h-full overflow-hidden">

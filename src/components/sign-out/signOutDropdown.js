@@ -21,20 +21,29 @@ import {
 } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { BASE_PATH } from "@/helper/constants";
+import { useSession } from "next-auth/react";
 
-export default function SignOutDropdown({ username }) {
+export default function SignOutDropdown() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const username = "NA"; // NA by default
+
+  // get username using useSession hook'
+    const { data: session } = useSession();
+    if(session?.user){
+        username = session?.user.name;
+    }
+
   const handleSignOut = async () => {
-        try{
-            await signOut({
-                redirect:true,
-                callbackUrl: `${BASE_PATH}/signin`
-            })
-        }
-        catch(err){
-            console.log('Signout failed', err);
-        }
+    try{
+        await signOut({
+            redirect:true,
+            callbackUrl: `${BASE_PATH}/signin`
+        })
+    }
+    catch(err){
+        console.log('Signout failed', err);
+    }
   }
 
   return (
@@ -45,7 +54,6 @@ export default function SignOutDropdown({ username }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-signupcard-bg border">
         <DropdownMenuLabel className="text-white">{username}</DropdownMenuLabel>
-        {/* <DropdownMenuSeparator /> */}
         <DropdownMenuItem
           className="text-white hover:text-black cursor-pointer"
           onClick={() => {

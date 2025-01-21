@@ -32,7 +32,7 @@ export default function SidebarUi() {
 
   const SideBarContent = (
     <>
-      <SidebarHeader className="bg-[#171717] flex flex-row items-center justify-end md:justify-between py-3">
+      <SidebarHeader className="bg-[#171717] flex flex-row items-center justify-end md:justify-between py-3 border-b-2 border-[#FFFFFF29]">
         {!isMobile && (<Button onClick={toggleSidebar}>
           <img
             src={sidebarCollapseIcon}
@@ -47,7 +47,7 @@ export default function SidebarUi() {
           </button>
         </div>
       </SidebarHeader>
-      <SidebarSeparator />
+      {/* <SidebarSeparator /> */}
         <SidebarContent className="bg-[#171717] pt-3">
           <RecordingsList recordings={recordings} />
       </SidebarContent>
@@ -77,7 +77,7 @@ export default function SidebarUi() {
 
   return (
     <>
-      <Sidebar className="border-r-0">
+      <Sidebar className="border-r-0 border-r-transparent">
         {SideBarContent}
       </Sidebar>
       {!open && (
