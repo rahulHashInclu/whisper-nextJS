@@ -69,14 +69,15 @@ export default function RecordingTranscript({recordingId, onTimelineUpdate, tran
     //   fetchAudioTranscriptions();
     // }, [recordingId])
   
+    console.log("RECORDING NAME", transcriptFetchData?.recordingname)
 
   return (
     <Card className="w-full max-w-3xl bg-signupcard-bg border-0 shadow-xl rounded-2xl max-h-[70vh]">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <h2 className="text-base font-semibold text-white">
-          {/* {fetchedTranscriptionData?.recordingname ? fetchedTranscriptionData?.recordingname : 'Loading...'} */}
-          {transcriptFetchData?.recordingname && transcriptFetchData?.recordingname}
-          {!transcriptFetchingError && !transcriptFetchData?.recordingname ? 'Loading...' : 'No recording name found'}
+          {transcriptFetchData?.recordingname ? transcriptFetchData?.recordingname : 'Loading...'}
+          {/* {transcriptFetchData?.recordingname && transcriptFetchData?.recordingname}
+          {!transcriptFetchingError && !transcriptFetchData?.recordingname ? 'Loading...' : 'No recording name found'} */}
         </h2>
         <div className="flex items-center gap-2">
           {/* <Button
@@ -86,14 +87,14 @@ export default function RecordingTranscript({recordingId, onTimelineUpdate, tran
           >
             <Search className="h-4 w-4" />
           </Button> */}
-          <Button
+          {/* <Button
             variant="ghost"
             size="icon"
             className="text-white/70 hover:text-white hover:bg-white/10"
           >
             <MoreHorizontal className="h-4 w-4" />
             <span className="sr-only">More options</span>
-          </Button>
+          </Button> */}
         </div>
       </CardHeader>
       <CardContent className="p-2 flex-1 min-h-0">

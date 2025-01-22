@@ -11,6 +11,7 @@ const GENERATE_MEETING_MINUTES = `${BASE_URL}/generate-meeting-minutes`;
 const VIEW_MEETING_MINUTES = `${BASE_URL}/view-meeting-minutes`;
 const UPDATE_SPEAKER_NAME = `${BASE_URL}/update-speaker-name`;
 const RENAME_RECORDING = `${BASE_URL}/update-recording-name`;
+const RECORDING_STATUS = `${BASE_URL}/get-recording-status`;
 
 export {
     SIGN_UP,
@@ -24,5 +25,6 @@ export {
     GENERATE_MEETING_MINUTES,
     VIEW_MEETING_MINUTES,
     UPDATE_SPEAKER_NAME,
-    RENAME_RECORDING
+    RENAME_RECORDING,
+    RECORDING_STATUS
 }
