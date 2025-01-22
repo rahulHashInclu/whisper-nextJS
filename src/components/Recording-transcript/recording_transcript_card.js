@@ -75,7 +75,8 @@ export default function RecordingTranscript({recordingId, onTimelineUpdate, tran
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <h2 className="text-base font-semibold text-white">
           {/* {fetchedTranscriptionData?.recordingname ? fetchedTranscriptionData?.recordingname : 'Loading...'} */}
-          {transcriptFetchData?.recordingname ? transcriptFetchData?.recordingname : 'Loading...'}
+          {transcriptFetchData?.recordingname && transcriptFetchData?.recordingname}
+          {!transcriptFetchingError && !transcriptFetchData?.recordingname ? 'Loading...' : 'No recording name found'}
         </h2>
         <div className="flex items-center gap-2">
           {/* <Button
