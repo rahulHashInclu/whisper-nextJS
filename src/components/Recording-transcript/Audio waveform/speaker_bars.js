@@ -63,7 +63,7 @@ const DynamicSpeakerTimeline = ({
       console.log("Updates object...", updates); // debug
 
       const response = await AudioService.updateSpeakerNames(jsonPath, updates);
-      console.log("Update speaker name response...", response);
+      console.log("Update speaker name response...", response); //debug
       if (response?.ok && response?.status === 200) {
         onSpeakerUpdate();
         toast.success("Speaker name updated successfully");

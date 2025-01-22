@@ -12,6 +12,7 @@ import { Menu } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "../ui/sheet";
 import { getAssetPath } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { Upload } from "lucide-react";
 
 const editIcon = getAssetPath("/assets/icons/Edit-icon.svg");
 const searchIcon = getAssetPath("/assets/icons/search-icon.svg");
@@ -43,7 +44,9 @@ export default function SidebarUi() {
         <div className="flex items-center gap-6 md:gap-4">
           <img src={searchIcon} alt="search-icon" />
           <button onClick={handleUploadRedirectionClick}>
-            <img src={editIcon} alt="edit-icon" />
+            {/* <img src={editIcon} alt="edit-icon" /> */}
+            {/* Changed the edit icon to Upload icon to naviagate between pages */}
+            <Upload className="text-white"/>
           </button>
         </div>
       </SidebarHeader>

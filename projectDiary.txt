@@ -15,3 +15,6 @@
 
 21-01-2025 -- rahul
 -- For sidebar, the issue with the right border is now resolved. By default, a root style was being applied to the Sidebar (border-color). Even though border-r-0 didn't work, when I set border-r-transparent, the border color was gone.
+
+22-01-2025 -- rahul
+-- As per Rithvik's comments, the search icon in transcripCard has no use. Hence removed it. Also, the 'more options' has no functionality yet.

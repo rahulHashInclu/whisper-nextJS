@@ -1,6 +1,6 @@
 "use client";
 
-import { format, isToday, subDays } from "date-fns";
+import { format, isToday, set, subDays } from "date-fns";
 import { MoreHorizontal } from "lucide-react";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 import { Button } from "../ui/button";
@@ -9,9 +9,24 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "../ui/skeleton";
-import { usePathname } from "next/navigation";
 import { useTimeline } from "@/context/audioContext";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
+import {
+  DropdownMenuContent,
+  DropdownMenu,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
+import { Label } from "../ui/label";
+import { toast } from "react-hot-toast";
+import { Input } from "../ui/input";
 
 export default function RecordingsList({ recordings }) {
   const router = useRouter();
@@ -22,7 +37,12 @@ export default function RecordingsList({ recordings }) {
   const [isLoading, setIsLoading] = useState(true);
   const [activeId, setActiveId] = useState("");
   const { refreshSidebar } = useTimeline();
-  // const pathName = usePathname();
+  const [recordingName, setRecordingName] = useState("");
+  const [selectRecordingId, setSelectRecordingId] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [renameValue, setRenameValue] = useState("");
+  const [localLoading, setLocalLoading] = useState(false);
+
 
   // for testing purpose
   const { status, data: session } = useSession();
@@ -91,6 +111,45 @@ export default function RecordingsList({ recordings }) {
     router.push(`/recording/${recordingId}`);
   };
 
+  const handleRenameClick = (recordingId, recordingName) => {
+    console.log("Recording id", recordingId);
+    console.log("Recording name", recordingName);
+    setSelectRecordingId(recordingId);
+    setRecordingName(recordingName);
+    setDialogOpen(true);
+  };
+
+  const renameValueChange = (e) => {
+    const newName = e.target.value;
+      setRecordingName(newName);
+      setRenameValue(newName);
+  };
+
+  const renameRecording = async () => {
+    setLocalLoading(true);
+    try{
+      if(renameValue && selectRecordingId){
+        const response = await AudioService.renameRecording(selectRecordingId, renameValue);
+        if(response?.ok && response?.status === 200){
+          toast.success('Recording name updated successfully');
+          setLocalLoading(false);
+          setRecordingName("");
+          setSelectRecordingId("");
+          setDialogOpen(false);
+          getRecordings();
+        }
+        else{
+          throw new Error('Failed to rename recording');
+        }
+      }
+    }
+    catch(err){
+      console.error('Failed to rename recording...', err);
+      toast.error('Could not update the recording name');
+      setLocalLoading(false);
+    }
+  }
+
   useEffect(() => {
     getRecordings();
   }, []);
@@ -122,51 +181,91 @@ export default function RecordingsList({ recordings }) {
   }
 
   return (
-    <div className="flex flex-col gap-1 px-2">
-      <SidebarMenu>
-        {Object.keys(fetchedRecordings).length > 0 ? (
-          Object.keys(fetchedRecordings)
-            .filter((category) => fetchedRecordings[category].length > 0)
-            .map((category) => (
-              <div key={category} className="flex flex-col gap-1">
-                <h2 className="px-2 py-1.5 text-sm font-semibold text-white/70">
-                  {category}
-                </h2>
-                {fetchedRecordings[category].map((item) => (
-                  <SidebarMenuItem key={item.id}>
-                    <SidebarMenuButton
-                      asChild
-                      className={`group relative flex h-14 flex-col items-start gap-0.5 rounded-lg hover:bg-white/5 px-2 py-1.5 
+    <>
+      <div className="flex flex-col gap-1 px-2">
+        <SidebarMenu>
+          {Object.keys(fetchedRecordings).length > 0 ? (
+            Object.keys(fetchedRecordings)
+              .filter((category) => fetchedRecordings[category].length > 0)
+              .map((category) => (
+                <div key={category} className="flex flex-col gap-1">
+                  <h2 className="px-2 py-1.5 text-sm font-semibold text-white/70">
+                    {category}
+                  </h2>
+                  {fetchedRecordings[category].map((item) => (
+                    <SidebarMenuItem key={item.id}>
+                      <SidebarMenuButton
+                        asChild
+                        className={`group relative flex h-14 flex-col items-start gap-0.5 rounded-lg hover:bg-white/5 px-2 py-1.5 
   ${activeId === item.id ? "bg-white/10" : "hover:bg-white/5"}`}
-                      onClick={() => handleRecordingClick(item.id)}
-                    >
-                      <button>
-                        <span className="text-sm font-medium text-white">
-                          {item.recordingname}
-                        </span>
-                        <span className="text-xs text-white/50">
-                          {format(item.timestamp, "MMM dd, yyyy • hh:mm a")}
-                        </span>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="absolute right-1 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100"
-                        >
-                          <MoreHorizontal className="h-4 w-4 text-white/70" />
-                          <span className="sr-only">More options</span>
-                        </Button>
-                      </button>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </div>
-            ))
-        ) : (
-          <h3 className="px-2 py-1.5 text-sm font-semibold text-white/70">
-            No recordings available
-          </h3>
-        )}
-      </SidebarMenu>
-    </div>
+                        onClick={() => handleRecordingClick(item.id)}
+                      >
+                        <button>
+                          <span className="text-sm font-medium text-white truncate text-ellipsis block overflow-hidden max-w-48">
+                            {item.recordingname}
+                          </span>
+                          <span className="text-xs text-white/50">
+                            {format(item.timestamp, "MMM dd, yyyy • hh:mm a")}
+                          </span>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="absolute right-1 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 hover:bg-white/10"
+                              >
+                                <MoreHorizontal className="h-4 w-4 text-white/70" />
+                                <span className="sr-only">More options</span>
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" alignOffset={-5}>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  handleRenameClick(item.id, item.recordingname)
+                                }
+                              >
+                                Rename
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="text-red-700">
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </button>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </div>
+              ))
+          ) : (
+            <h3 className="px-2 py-1.5 text-sm font-semibold text-white/70">
+              No recordings available
+            </h3>
+          )}
+        </SidebarMenu>
+      </div>
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="bg-signupcard-bg">
+          <DialogHeader>
+            <DialogTitle className="text-white">Rename {recordingName}</DialogTitle>
+          </DialogHeader>
+          <div className="flex items-center gap-2">
+            <Label className="sr-only">Rename</Label>
+            <Input type="text" maxLength="40" value={recordingName} onChange={renameValueChange}/>
+            <Button onClick={renameRecording} disabled={localLoading || !renameValue}>
+              {localLoading ? 'Saving...' : 'Save'}
+            </Button>
+          </div>
+          <DialogFooter className="sm:justify-start">
+            <DialogClose asChild>
+              <Button type="button" variant="secondary" className="bg-signup-bg text-white">
+                Close
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
