@@ -42,6 +42,7 @@ export default function RecordingsList({ recordings }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [renameValue, setRenameValue] = useState("");
   const [localLoading, setLocalLoading] = useState(false);
+  const [isProcessed, setIsProcessed] = useState(false);
 
 
   // for testing purpose
@@ -51,6 +52,23 @@ export default function RecordingsList({ recordings }) {
     console.log("Session status : ", status);
     console.log("Session value : ", session);
   }, [status, session]);
+
+  useEffect(() => {
+    const checkProcessingStatus = async () => {
+      if (dialogOpen) {
+        try {
+          const response = await AudioService.getRecordingStatus(selectRecordingId);
+          setIsProcessed(response?.data?.recording_status.toLowerCase() === "completed");
+        } catch (err) {
+          setIsProcessed(false);
+        }
+      }
+    };
+  
+    checkProcessingStatus();
+  }, [dialogOpen, selectRecordingId]);
+  
+  
   //
 
   const categorizeRecordingsByTimestamp = (recordings) => {
@@ -106,9 +124,29 @@ export default function RecordingsList({ recordings }) {
     }
   };
 
-  const handleRecordingClick = (recordingId) => {
-    setActiveId(recordingId);
-    router.push(`/recording/${recordingId}`);
+  const handleRecordingClick = async (recordingId) => {
+    // router.push(`/recording/${recordingId}`);
+    try{
+      const loadingToast = toast.loading("Checking if recording processed...", {
+        duration: Infinity
+      });      
+      const response = await AudioService.getRecordingStatus(recordingId);
+      console.log("Recording status response...", response);
+      if(response?.data?.recording_status.toLowerCase() === "completed"){
+        toast.dismiss(loadingToast);
+        setActiveId(recordingId);
+        router.push(`/recording/${recordingId}`);
+      }
+      else{
+        toast.dismiss(loadingToast);
+        toast.error('Recording not processed yet, please try again later..');
+      }
+    }
+    catch(err){
+      console.log("Error in getting recording status...", err);
+      toast.dismiss(loadingToast);
+      toast.error('Recording not processed yet, please try again later..');
+    }
   };
 
   const handleRenameClick = (recordingId, recordingName) => {
@@ -253,7 +291,7 @@ export default function RecordingsList({ recordings }) {
           <div className="flex items-center gap-2">
             <Label className="sr-only">Rename</Label>
             <Input type="text" maxLength="40" value={recordingName} onChange={renameValueChange}/>
-            <Button onClick={renameRecording} disabled={localLoading || !renameValue}>
+            <Button onClick={renameRecording} disabled={localLoading || !renameValue || !isProcessed}>
               {localLoading ? 'Saving...' : 'Save'}
             </Button>
           </div>

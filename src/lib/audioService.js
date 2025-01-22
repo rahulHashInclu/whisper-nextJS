@@ -1,6 +1,7 @@
 import ApiClient from "./apiClient";
 import { GET_RECORDINGS, UPLOAD_AUDIO, DOWNLOAD_AUDIO, GET_TRANSCRIPTIONS, GET_AI_RESPONSE, GENERATE_MEETING_MINUTES, VIEW_MEETING_MINUTES, UPDATE_SPEAKER_NAME,
-    RENAME_RECORDING
+    RENAME_RECORDING,
+    RECORDING_STATUS
  } from "@/helper/constants";
 
 
@@ -51,5 +52,9 @@ export const AudioService = {
         const requestBody = {recording_id: recordingId, new_recording_name: newRecordingName};
 
         return ApiClient.post(RENAME_RECORDING, requestBody)
+    },
+
+    getRecordingStatus: async (recordingId) => {
+        return ApiClient.get(`${RECORDING_STATUS}/${recordingId}`)
     }
 }
