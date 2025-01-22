@@ -44,7 +44,6 @@ export default function RecordingsList({ recordings }) {
   const [localLoading, setLocalLoading] = useState(false);
   const [isProcessed, setIsProcessed] = useState(false);
 
-
   // for testing purpose
   const { status, data: session } = useSession();
 
@@ -53,22 +52,28 @@ export default function RecordingsList({ recordings }) {
     console.log("Session value : ", session);
   }, [status, session]);
 
-  useEffect(() => {
-    const checkProcessingStatus = async () => {
-      if (dialogOpen) {
-        try {
-          const response = await AudioService.getRecordingStatus(selectRecordingId);
-          setIsProcessed(response?.data?.recording_status.toLowerCase() === "completed");
-        } catch (err) {
-          setIsProcessed(false);
-        }
+
+  const checkProcessingStatus = async () => {
+    if (dialogOpen) {
+      try {
+        const response = await AudioService.getRecordingStatus(
+          selectRecordingId
+        );
+        setIsProcessed(
+          response?.data?.recording_status.toLowerCase() === "completed"
+        );
+      } catch (err) {
+        setIsProcessed(false);
       }
-    };
-  
+    }
+  };
+
+  useEffect(() => {
+    
+
     checkProcessingStatus();
   }, [dialogOpen, selectRecordingId]);
-  
-  
+
   //
 
   const categorizeRecordingsByTimestamp = (recordings) => {
@@ -126,26 +131,24 @@ export default function RecordingsList({ recordings }) {
 
   const handleRecordingClick = async (recordingId) => {
     // router.push(`/recording/${recordingId}`);
-    try{
+    try {
       const loadingToast = toast.loading("Checking if recording processed...", {
-        duration: Infinity
-      });      
+        duration: Infinity,
+      });
       const response = await AudioService.getRecordingStatus(recordingId);
       console.log("Recording status response...", response);
-      if(response?.data?.recording_status.toLowerCase() === "completed"){
+      if (response?.data?.recording_status.toLowerCase() === "completed") {
         toast.dismiss(loadingToast);
         setActiveId(recordingId);
         router.push(`/recording/${recordingId}`);
-      }
-      else{
+      } else {
         toast.dismiss(loadingToast);
-        toast.error('Recording not processed yet, please try again later..');
+        toast.error("Recording not processed yet, please try again later..");
       }
-    }
-    catch(err){
+    } catch (err) {
       console.log("Error in getting recording status...", err);
       toast.dismiss(loadingToast);
-      toast.error('Recording not processed yet, please try again later..');
+      toast.error("Recording not processed yet, please try again later..");
     }
   };
 
@@ -159,34 +162,35 @@ export default function RecordingsList({ recordings }) {
 
   const renameValueChange = (e) => {
     const newName = e.target.value;
-      setRecordingName(newName);
-      setRenameValue(newName);
+    setRecordingName(newName);
+    setRenameValue(newName);
   };
 
   const renameRecording = async () => {
     setLocalLoading(true);
-    try{
-      if(renameValue && selectRecordingId){
-        const response = await AudioService.renameRecording(selectRecordingId, renameValue);
-        if(response?.ok && response?.status === 200){
-          toast.success('Recording name updated successfully');
+    try {
+      if (renameValue && selectRecordingId) {
+        const response = await AudioService.renameRecording(
+          selectRecordingId,
+          renameValue
+        );
+        if (response?.ok && response?.status === 200) {
+          toast.success("Recording name updated successfully");
           setLocalLoading(false);
           setRecordingName("");
           setSelectRecordingId("");
           setDialogOpen(false);
           getRecordings();
-        }
-        else{
-          throw new Error('Failed to rename recording');
+        } else {
+          throw new Error("Failed to rename recording");
         }
       }
-    }
-    catch(err){
-      console.error('Failed to rename recording...', err);
-      toast.error('Could not update the recording name');
+    } catch (err) {
+      console.error("Failed to rename recording...", err);
+      toast.error("Could not update the recording name");
       setLocalLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     getRecordings();
@@ -251,22 +255,25 @@ export default function RecordingsList({ recordings }) {
                                 variant="ghost"
                                 size="icon"
                                 className="absolute right-1 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 hover:bg-white/10"
+                                onClick={(e) => e.stopPropagation()}
                               >
                                 <MoreHorizontal className="h-4 w-4 text-white/70" />
                                 <span className="sr-only">More options</span>
                               </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" alignOffset={-5}>
+                            <DropdownMenuContent align="end" alignOffset={-5} className="absolute right-auto left-40 bg-signupcard-bg text-white">
                               <DropdownMenuItem
-                                onClick={() =>
-                                  handleRenameClick(item.id, item.recordingname)
+                                onClick={(e) =>{
+                                  e.preventDefault();
+                                   e.stopPropagation();
+                                  handleRenameClick(item.id, item.recordingname)}
                                 }
                               >
                                 Rename
                               </DropdownMenuItem>
-                              <DropdownMenuItem className="text-red-700">
+                              {/* <DropdownMenuItem className="text-red-700">
                                 Delete
-                              </DropdownMenuItem>
+                              </DropdownMenuItem> */}
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </button>
@@ -286,18 +293,32 @@ export default function RecordingsList({ recordings }) {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="bg-signupcard-bg">
           <DialogHeader>
-            <DialogTitle className="text-white">Rename {recordingName}</DialogTitle>
+            <DialogTitle className="text-white">
+              Rename {recordingName}
+            </DialogTitle>
           </DialogHeader>
           <div className="flex items-center gap-2">
             <Label className="sr-only">Rename</Label>
-            <Input type="text" maxLength="40" value={recordingName} onChange={renameValueChange}/>
-            <Button onClick={renameRecording} disabled={localLoading || !renameValue || !isProcessed}>
-              {localLoading ? 'Saving...' : 'Save'}
+            <Input
+              type="text"
+              maxLength="40"
+              value={recordingName}
+              onChange={renameValueChange}
+            />
+            <Button
+              onClick={renameRecording}
+              disabled={localLoading || !renameValue || !isProcessed}
+            >
+              {localLoading ? "Saving..." : "Save"}
             </Button>
           </div>
           <DialogFooter className="sm:justify-start">
             <DialogClose asChild>
-              <Button type="button" variant="secondary" className="bg-signup-bg text-white">
+              <Button
+                type="button"
+                variant="secondary"
+                className="bg-signup-bg text-white"
+              >
                 Close
               </Button>
             </DialogClose>

@@ -16,6 +16,7 @@ export function RecordingWrapper({recordingId}){
     const [transcriptData, setTranscriptData] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [transcriptFetchingError, setTranscriptFetchingError] = useState("");
+    const [embeddingCompleted, setEmbeddingCompleted] = useState(false);
 
     const handleDataUpdate = (apiData) => {
         const segments = apiData?.result;
@@ -63,15 +64,27 @@ export function RecordingWrapper({recordingId}){
         }
       };
 
+    const getEmbeddingStatus = async () => {
+      if(recordingId){
+        const response = await AudioService.getEmbeddingStatus(recordingId);
+        console.log("Embedding response", response);
+        if(response?.data?.embedding_status.toLowerCase() === 'completed' && response?.data?.recording_status.toLowerCase() === 'completed'){
+          setEmbeddingCompleted(true);
+        }
+      }
+    }
+    //embedding_status, recording_status
+
     useEffect(()=>{
         refreshTranscriptionData();
+        getEmbeddingStatus();
     }, [recordingId])
     
 
     return(
         <div className="h-full flex flex-col justify-start py-4 gap-4 items-center px-2 md:px-0 overflow-auto">
             <AudioPlayCard recordingId={recordingId} timelineData={timelineData} onSpeakerUpdate={refreshTranscriptionData} isLoading={isLoading}/>
-            <RecordingTranscript recordingId={recordingId} onTimelineUpdate={setTimelineData} transcriptFetchData={transcriptData} transcriptFetchingError={transcriptFetchingError}/>
+            <RecordingTranscript recordingId={recordingId} onTimelineUpdate={setTimelineData} transcriptFetchData={transcriptData} transcriptFetchingError={transcriptFetchingError} embeddingCompleted={embeddingCompleted}/>
         </div>
     )
 }

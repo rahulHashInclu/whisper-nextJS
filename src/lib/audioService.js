@@ -1,7 +1,9 @@
 import ApiClient from "./apiClient";
 import { GET_RECORDINGS, UPLOAD_AUDIO, DOWNLOAD_AUDIO, GET_TRANSCRIPTIONS, GET_AI_RESPONSE, GENERATE_MEETING_MINUTES, VIEW_MEETING_MINUTES, UPDATE_SPEAKER_NAME,
     RENAME_RECORDING,
-    RECORDING_STATUS
+    RECORDING_STATUS,
+    GLOBAL_QUERY_SEARCH,
+    GET_EMBEDDING_STATUS
  } from "@/helper/constants";
 
 
@@ -56,5 +58,14 @@ export const AudioService = {
 
     getRecordingStatus: async (recordingId) => {
         return ApiClient.get(`${RECORDING_STATUS}/${recordingId}`)
+    },
+
+    getGlobalAiResponse: async (query) => {
+        const requestBody = {query};
+        return ApiClient.post(GLOBAL_QUERY_SEARCH, requestBody);
+    },
+
+    getEmbeddingStatus: async (recordingId) => {
+        return ApiClient.get(`${GET_EMBEDDING_STATUS}/${recordingId}`)
     }
 }
