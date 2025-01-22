@@ -1,5 +1,7 @@
 import ApiClient from "./apiClient";
-import { GET_RECORDINGS, UPLOAD_AUDIO, DOWNLOAD_AUDIO, GET_TRANSCRIPTIONS, GET_AI_RESPONSE, GENERATE_MEETING_MINUTES, VIEW_MEETING_MINUTES, UPDATE_SPEAKER_NAME } from "@/helper/constants";
+import { GET_RECORDINGS, UPLOAD_AUDIO, DOWNLOAD_AUDIO, GET_TRANSCRIPTIONS, GET_AI_RESPONSE, GENERATE_MEETING_MINUTES, VIEW_MEETING_MINUTES, UPDATE_SPEAKER_NAME,
+    RENAME_RECORDING
+ } from "@/helper/constants";
 
 
 export const AudioService = {
@@ -43,5 +45,11 @@ export const AudioService = {
         const requestBody = {json_path: jsonPath, speaker_name_updates: speakerUpdates};
 
         return ApiClient.post(UPDATE_SPEAKER_NAME, requestBody)
+    },
+
+    renameRecording: async (recordingId, newRecordingName) => {
+        const requestBody = {recording_id: recordingId, new_recording_name: newRecordingName};
+
+        return ApiClient.post(RENAME_RECORDING, requestBody)
     }
 }

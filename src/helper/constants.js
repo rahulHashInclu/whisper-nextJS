@@ -10,6 +10,7 @@ const GET_AI_RESPONSE = `${BASE_URL}/query-search`;
 const GENERATE_MEETING_MINUTES = `${BASE_URL}/generate-meeting-minutes`;
 const VIEW_MEETING_MINUTES = `${BASE_URL}/view-meeting-minutes`;
 const UPDATE_SPEAKER_NAME = `${BASE_URL}/update-speaker-name`;
+const RENAME_RECORDING = `${BASE_URL}/update-recording-name`;
 
 export {
     SIGN_UP,
@@ -22,5 +23,6 @@ export {
     GET_AI_RESPONSE,
     GENERATE_MEETING_MINUTES,
     VIEW_MEETING_MINUTES,
-    UPDATE_SPEAKER_NAME
+    UPDATE_SPEAKER_NAME,
+    RENAME_RECORDING
 }
