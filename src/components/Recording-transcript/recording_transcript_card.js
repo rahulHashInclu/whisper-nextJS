@@ -78,13 +78,13 @@ export default function RecordingTranscript({recordingId, onTimelineUpdate, tran
           {transcriptFetchData?.recordingname ? transcriptFetchData?.recordingname : 'Loading...'}
         </h2>
         <div className="flex items-center gap-2">
-          <Button
+          {/* <Button
             variant="ghost"
             size="icon"
             className="text-white/70 hover:text-white hover:bg-white/10"
           >
             <Search className="h-4 w-4" />
-          </Button>
+          </Button> */}
           <Button
             variant="ghost"
             size="icon"
@@ -113,9 +113,6 @@ export default function RecordingTranscript({recordingId, onTimelineUpdate, tran
             <TranscriptTabContents recordingId={recordingId} transcriptionContent={transcriptFetchData} transcriptFetchingError={transcriptFetchingError}/>
           </TabsContent>
           <TabsContent value="minutes" className="p-4 h-[calc(100%-3rem)]">
-            {/* <div className="text-sm text-white/70">
-              Meeting minutes content here...
-            </div> */}
             <MeetingMinutes recordingId={recordingId}/>
           </TabsContent>
           <TabsContent value="ai-chat" className="p-4">

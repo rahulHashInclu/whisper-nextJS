@@ -10,8 +10,11 @@ import { AudioService } from "@/lib/audioService";
 import { Alert, AlertDescription } from "../ui/alert";
 import { getAssetPath } from "@/lib/utils";
 import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const aiChatBottomIcon = getAssetPath("/assets/icons/AI_chat_input_icon.svg");
+const aiChatAvatar = getAssetPath("/assets/AI_avatar.svg");
+const aiChatSendIcon = getAssetPath("/assets/icons/AI_chat_send_icon.svg");
 
 export default function AiChatInterface({ recordingId }) {
   const { data: session } = useSession();
@@ -97,6 +100,15 @@ export default function AiChatInterface({ recordingId }) {
     }
   };
 
+  const AiChatAvatar = () => {
+    return (
+      <Avatar>
+        <AvatarImage src={aiChatAvatar} alt="AI" />
+        <AvatarFallback>AI</AvatarFallback>
+      </Avatar>
+    );
+  }
+
   return (
     <>
       <ScrollArea className="h-64 md:px-2" ref={scrollAreaRef}>
@@ -122,7 +134,9 @@ export default function AiChatInterface({ recordingId }) {
                   message.sender === "user" ? "flex-row-reverse" : "flex-row"
                 }`}
               >
-                <TopRightAvatar userName={session?.user?.name} />
+                {message.sender === 'user' ? (<TopRightAvatar userName={session?.user?.name} />):(
+                  <AiChatAvatar/>
+                )}
 
                 <div
                   className={`rounded-lg text-sm p-2 ${
@@ -139,7 +153,8 @@ export default function AiChatInterface({ recordingId }) {
           {isLoading && (
             <div className="flex justify-start">
               <div className="flex gap-3 max-w-[80%]">
-                <TopRightAvatar userName={session?.user?.name} />
+                {/* <TopRightAvatar userName={session?.user?.name} /> */}
+                <AiChatAvatar/>
                 <div className="rounded-lg text-sm p-2 bg-gray-800 text-white">
                   Thinking...
                 </div>
@@ -161,11 +176,11 @@ export default function AiChatInterface({ recordingId }) {
             disabled={isLoading}
           />
           <Button
-            className="w-10 h-10 rounded bg-gray-800 flex items-center justify-center"
+            className="w-10 h-10 rounded bg-white flex items-center justify-center hover:bg-white/10 p-0"
             onClick={handleSendQueryClick}
             disabled={isLoading || !queryInput.trim()}
           >
-            Send
+            <Image src={aiChatSendIcon} alt="Send" width={20} height={20}/>
           </Button>
         </div>
       </div>

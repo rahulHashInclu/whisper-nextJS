@@ -26,7 +26,7 @@ import { useSession } from "next-auth/react";
 export default function SignOutDropdown() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const username = "NA"; // NA by default
+  let username = "NA"; // NA by default
 
   // get username using useSession hook'
     const { data: session } = useSession();

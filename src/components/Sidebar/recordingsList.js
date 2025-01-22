@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { Skeleton } from "../ui/skeleton";
 import { usePathname } from "next/navigation";
 import { useTimeline } from "@/context/audioContext";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { DropdownMenuContent, DropdownMenu, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 export default function RecordingsList({ recordings }) {
   const router = useRouter();
@@ -147,6 +147,8 @@ export default function RecordingsList({ recordings }) {
                         <span className="text-xs text-white/50">
                           {format(item.timestamp, "MMM dd, yyyy • hh:mm a")}
                         </span>
+                        <DropdownMenu>
+                        <DropdownMenuTrigger>
                         <Button
                           variant="ghost"
                           size="icon"
@@ -155,6 +157,11 @@ export default function RecordingsList({ recordings }) {
                           <MoreHorizontal className="h-4 w-4 text-white/70" />
                           <span className="sr-only">More options</span>
                         </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem>Delete</DropdownMenuItem>
+                        </DropdownMenuContent>
+                        </DropdownMenu>
                       </button>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

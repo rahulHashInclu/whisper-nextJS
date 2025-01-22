@@ -26,9 +26,9 @@ export default function UploadAudioCard() {
           {/* Drag & Drop section */}
           <UploadAudioDragAndDrop />
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex justify-center items-center">
           <div className="flex gap-2 text-gray-400 text-sm justify-center items-center">
-            <span>Maximum file size: 5 MB</span>
+            <span>Maximum file size: 300 MB</span>
             <span>|</span>
             <span>Supported format: .MP3, WAV</span>
           </div>

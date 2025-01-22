@@ -92,7 +92,15 @@ export default function UploadAudioDragAndDrop() {
 
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
-    setSelectedFile(file);
+    const maxSize = 300 * 1024 * 1024; // 300MB is the max size
+    if(file){
+      if(file.size > maxSize){
+        toast.error("File size exceeds the limit of 300MB");
+        e.target.value = '';
+        return;
+      }
+      setSelectedFile(file);
+    }
   };
 
   const handleAudioFileSelect = async () => {
@@ -208,22 +216,27 @@ export default function UploadAudioDragAndDrop() {
     try {
       if (!audioFile) {
         setError("No file to upload");
-        // toast.error("No file to upload", { duration: 5000 });
+        toast.error("No file to upload", { duration: 5000 });
         return;
       }
 
       if (!speakers || parseInt(speakers, 10) < 1) {
         setError("Number of speakers must be greater than or equal to 1");
-        // toast.error("Number of speakers must be greater than or equal to 1", {
-        //   duration: 5000,
-        // });
+        toast.error("Number of speakers must be greater than or equal to 1", {
+          duration: 5000,
+        });
         return;
       }
       //debug
       console.log("Audio file...", audioFile);
       console.log("No of speakers...", speakers); //
 
+      const loadingToast = toast.loading("Uploading audio...", {
+        duration: Infinity
+      });      
+
       const response = await AudioService.uploadAudio(audioFile, speakers);
+      toast.dismiss(loadingToast);
       console.log("Upload audio reponse...", response); // debug
       if (response?.ok) {
           // Handle success
@@ -232,6 +245,9 @@ export default function UploadAudioDragAndDrop() {
           setSpeakers("");
           setAudioFile(null);
           refreshSidebarData();
+      }
+      else{
+        throw new Error("Failed to upload audio");
       }
     } catch (err) {
       toast.error("Error in uploading audio, please try again");
