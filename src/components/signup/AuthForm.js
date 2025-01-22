@@ -188,6 +188,7 @@ export default function AuthForm({ initialType }) {
             required
             className={inputStyle}
             onChange={handleChange}
+            maxLength={20}
           />
           {formErrors["name"] && (
           <p className={errorMsgStyle}>{formErrors["name"]}</p>
@@ -204,6 +205,7 @@ export default function AuthForm({ initialType }) {
           required
           className={inputStyle}
           onChange={handleChange}
+          maxLength={30}
         />
         {formErrors["email"] && (
           <p className={errorMsgStyle}>{formErrors["email"]}</p>
@@ -222,6 +224,7 @@ export default function AuthForm({ initialType }) {
           required
           className={inputStyle}
           onChange={handleChange}
+          maxLength={20}
         />
         <button
           type="button"
@@ -254,6 +257,7 @@ export default function AuthForm({ initialType }) {
             required
             className={inputStyle}
             onChange={handleChange}
+            maxLength={20}
           />
           <button
             type="button"
@@ -274,7 +278,7 @@ export default function AuthForm({ initialType }) {
       )}
 
       <Button
-        className="w-full py-6 bg-white opacity-25 text-black hover:text-white font-normal"
+        className="w-full py-6 bg-white opacity-25 text-black hover:text-white hover:opacity-80 font-normal"
         type="submit"
       >
         {isSignup ? "Sign Up" : "Sign In"}
