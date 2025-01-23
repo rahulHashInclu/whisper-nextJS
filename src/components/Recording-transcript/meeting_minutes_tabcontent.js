@@ -127,7 +127,7 @@ export default function MeetingMinutes({ recordingId }) {
                 <Badge 
                   key={index} 
                   variant="outline" 
-                  className="bg-gray-800 text-white border-gray-700 flex items-center gap-2"
+                  className="bg-[#FFFFFF0D] text-white border-gray-700 flex items-center gap-2"
                 >
                   {attendee}
                 </Badge>

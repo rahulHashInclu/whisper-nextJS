@@ -70,7 +70,7 @@ export default function SidebarUi() {
         </div>
       </SidebarHeader>
       {/* <SidebarSeparator /> */}
-      <SidebarContent className="bg-[#171717] pt-3">
+      <SidebarContent className="bg-[#171717] pt-3 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/90">
         <RecordingsList recordings={recordings} />
       </SidebarContent>
     </>
