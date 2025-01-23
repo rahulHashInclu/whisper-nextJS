@@ -162,7 +162,7 @@ const DynamicSpeakerTimeline = ({
         <>
           <div className={containerStyle}>
             {Array.from({ length: numSpeakers }, (_, i) =>
-              renderSpeakerTimeline(`speaker_${i}`, i%2, i)
+              renderSpeakerTimeline(`speaker_${i}`, i, i)
             )}
           </div>
           <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
