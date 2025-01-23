@@ -1,4 +1,3 @@
-import SignUp from "@/components/signup/signUp";
 import SignUpCardHolder from "@/components/custom-ui/signUpCardHolder";
 import AuthCard from "@/components/signup/AuthCard";
 
