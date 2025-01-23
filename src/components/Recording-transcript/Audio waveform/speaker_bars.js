@@ -122,7 +122,7 @@ const DynamicSpeakerTimeline = ({
         <div
           className={`w-28 md:w-28 text-sm text-gray-200 font-medium flex justify-between items-center gap-3 shrink-0`}
         >
-          <p className={`text-${colorClass}`}>{speakerName}</p>
+          <p className={`text-${colorClass} truncate text-ellipsis max-w-40`}>{speakerName}</p>
           <button onClick={() => handleSpeakerNameEdit(speakerName, index)}>
             <img src={editIcon} alt="edit" className="w-4 h-4" />
           </button>
@@ -168,15 +168,16 @@ const DynamicSpeakerTimeline = ({
             )}
           </div>
           <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-            <DialogContent>
+            <DialogContent className="bg-signupcard-bg">
               <DialogHeader>
-                <DialogTitle>Edit Speaker Name</DialogTitle>
+                <DialogTitle className="text-white">Edit Speaker Name</DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
                 <Input
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   placeholder="Enter new name"
+                  maxLength={25}
                 />
                 <div className="flex justify-end gap-2">
                   <Button

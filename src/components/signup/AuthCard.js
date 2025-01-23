@@ -58,13 +58,13 @@ export default function AuthCard({initialType}) {
       </div>
       {/* </Seperator> */}
       <CardFooter className="justify-between gap-4">
-        <Button className="flex-1">
+        <Button className="flex-1 cursor-not-allowed" disabled={true}>
           <img src={appleLogo} alt="apple-logo" />
         </Button>
-        <Button className="flex-1">
+        <Button className="flex-1 cursor-not-allowed" disabled={true}>
           <img src={googleLogo} alt="google-logo" />
         </Button>
-        <Button className="flex-1">
+        <Button className="flex-1 cursor-not-allowed" disabled={true}>
           <img src={xLogo} alt="x-logo" />
         </Button>
       </CardFooter>

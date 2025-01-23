@@ -297,7 +297,7 @@ export default function RecordingsList({ recordings }) {
               Rename {recordingName}
             </DialogTitle>
           </DialogHeader>
-          <div className="flex items-center gap-2">
+          <div className="space-y-4">
             <Label className="sr-only">Rename</Label>
             <Input
               type="text"
@@ -305,14 +305,27 @@ export default function RecordingsList({ recordings }) {
               value={recordingName}
               onChange={renameValueChange}
             />
+            <div className="flex justify-end gap-2">
+            <DialogClose asChild>
+              <Button
+                type="button"
+                // variant="secondary"
+                variant="outline"
+                // className="bg-signup-bg text-white"
+              >
+                Close
+              </Button>
+            </DialogClose>
             <Button
               onClick={renameRecording}
               disabled={localLoading || !renameValue || !isProcessed}
             >
               {localLoading ? "Saving..." : "Save"}
             </Button>
+            </div>
+
           </div>
-          <DialogFooter className="sm:justify-start">
+          {/* <DialogFooter className="sm:justify-start">
             <DialogClose asChild>
               <Button
                 type="button"
@@ -322,7 +335,7 @@ export default function RecordingsList({ recordings }) {
                 Close
               </Button>
             </DialogClose>
-          </DialogFooter>
+          </DialogFooter> */}
         </DialogContent>
       </Dialog>
     </>
