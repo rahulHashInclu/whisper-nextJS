@@ -1,6 +1,6 @@
 "use client";
 
-import { format, isToday, set, subDays } from "date-fns";
+import { format, isToday, subDays } from "date-fns";
 import { MoreHorizontal } from "lucide-react";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 import { Button } from "../ui/button";
@@ -27,6 +27,7 @@ import {
 import { Label } from "../ui/label";
 import { toast } from "react-hot-toast";
 import { Input } from "../ui/input";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 export default function RecordingsList({ recordings }) {
   const router = useRouter();
@@ -271,9 +272,6 @@ export default function RecordingsList({ recordings }) {
                               >
                                 Rename
                               </DropdownMenuItem>
-                              {/* <DropdownMenuItem className="text-red-700">
-                                Delete
-                              </DropdownMenuItem> */}
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </button>
@@ -316,12 +314,24 @@ export default function RecordingsList({ recordings }) {
                 Close
               </Button>
             </DialogClose>
-            <Button
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                <Button
               onClick={renameRecording}
               disabled={localLoading || !renameValue || !isProcessed}
             >
               {localLoading ? "Saving..." : "Save"}
             </Button>
+                </TooltipTrigger>
+                {!isProcessed && (
+                  <TooltipContent>
+                    <p>Cannot rename this audio since it failed to process..</p>
+                  </TooltipContent>
+                )}
+              </Tooltip>
+            </TooltipProvider>
+            
             </div>
 
           </div>

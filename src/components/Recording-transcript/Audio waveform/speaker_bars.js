@@ -30,11 +30,8 @@ const DynamicSpeakerTimeline = ({
   const [isUpdating, setIsUpdating] = useState(false);
 
   const speakerColors = [
-    "rose-500", // Speaker 0
-    "violet-500", // Speaker 1
-    "blue-500", // Speaker 2
-    "green-500", // Speaker 3
-    "yellow-500", // Speaker 4
+    "rose-500",
+    "violet-500",
   ];
 
   const handleSpeakerNameEdit = (speakerName, speakerId) => {
@@ -113,9 +110,10 @@ const DynamicSpeakerTimeline = ({
   const speakerNameStyle =
     "w-28 md:w-28 text-sm text-gray-200 font-medium flex justify-between items-center gap-3 shrink-0";
 
-  const renderSpeakerTimeline = (speakerId, colorClass, index) => {
+  const renderSpeakerTimeline = (speakerId, colorIndex, index) => {
     const speakerSegments = groupedSegments[speakerId] || [];
     const speakerName = speakersList[index];
+    const colorClass = speakerColors[index % 2];
 
     return (
       <div key={speakerId} className={speakerRowStyle}>
@@ -164,7 +162,7 @@ const DynamicSpeakerTimeline = ({
         <>
           <div className={containerStyle}>
             {Array.from({ length: numSpeakers }, (_, i) =>
-              renderSpeakerTimeline(`speaker_${i}`, speakerColors[i], i)
+              renderSpeakerTimeline(`speaker_${i}`, i%2, i)
             )}
           </div>
           <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
