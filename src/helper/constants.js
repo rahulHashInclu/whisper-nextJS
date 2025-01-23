@@ -12,6 +12,8 @@ const VIEW_MEETING_MINUTES = `${BASE_URL}/view-meeting-minutes`;
 const UPDATE_SPEAKER_NAME = `${BASE_URL}/update-speaker-name`;
 const RENAME_RECORDING = `${BASE_URL}/update-recording-name`;
 const RECORDING_STATUS = `${BASE_URL}/get-recording-status`;
+const GLOBAL_QUERY_SEARCH = `${BASE_URL}/global-query-search`;
+const GET_EMBEDDING_STATUS = `${BASE_URL}/get-embedding-status`;
 
 export {
     SIGN_UP,
@@ -26,5 +28,7 @@ export {
     VIEW_MEETING_MINUTES,
     UPDATE_SPEAKER_NAME,
     RENAME_RECORDING,
-    RECORDING_STATUS
+    RECORDING_STATUS,
+    GLOBAL_QUERY_SEARCH,
+    GET_EMBEDDING_STATUS
 }

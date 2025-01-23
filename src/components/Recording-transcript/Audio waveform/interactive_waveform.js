@@ -96,6 +96,7 @@ export default function InteractiveAudioWaveform({ audioUrl }) {
           onClick={handlePlayPause}
           className="rounded-full flex items-center justify-center bg-white hover:bg-gray-200 shadow-lg shadow-[#FFFFFF4D]"
           size="icon"
+          disabled={true}
         >
           {isPlaying ? (
             <Pause

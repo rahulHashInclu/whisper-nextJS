@@ -10,7 +10,7 @@ export default function ConnectWithMeet() {
       <Label className={themeStyles.text.label}>Connect with</Label>
       <div className="flex items-center gap-2">
         <UploadMeetUrlInput />
-        <Button className="bg-[#D9D9D9] text-mainpage-bg">Connect</Button>
+        <Button className="bg-[#D9D9D9] text-mainpage-bg hover:text-white cursor-not-allowed">Connect</Button>
       </div>
     </div>
   );

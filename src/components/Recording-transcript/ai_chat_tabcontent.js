@@ -3,17 +3,15 @@
 import { ScrollArea } from "../ui/scroll-area";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import TopRightAvatar from "../custom-ui/avatar";
 import { useSession } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
 import { AudioService } from "@/lib/audioService";
-import { Alert, AlertDescription } from "../ui/alert";
 import { getAssetPath } from "@/lib/utils";
 import Image from "next/image";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import AiChatMessageBox from "./ai_chat_message_box";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
 const aiChatBottomIcon = getAssetPath("/assets/icons/AI_chat_input_icon.svg");
-const aiChatAvatar = getAssetPath("/assets/AI_avatar.svg");
 const aiChatSendIcon = getAssetPath("/assets/icons/AI_chat_send_icon.svg");
 
 export default function AiChatInterface({ recordingId }) {
@@ -22,6 +20,14 @@ export default function AiChatInterface({ recordingId }) {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef(null);
+  const [activeTab, setActiveTab] = useState("local");
+
+  const [localMessages, setLocalMessages] = useState([]);
+  const [isLocalLoading, setIsLocalLoading] = useState(false);
+  // Global chat states
+  const [globalMessages, setGlobalMessages] = useState([]);
+  const [isGlobalLoading, setIsGlobalLoading] = useState(false);
+
 
   // Scroll to bottom when new messages are added
   useEffect(() => {
@@ -41,29 +47,42 @@ export default function AiChatInterface({ recordingId }) {
   };
 
   const addMessage = (content, sender) => {
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        content,
-        sender,
-      },
-    ]);
+    if(activeTab === 'local'){
+      setLocalMessages((prev) => [...prev, { id: Date.now(), content, sender }]);
+    }
+    else{
+      setGlobalMessages((prev) => [...prev, { id: Date.now(), content, sender }]);
+    }
+    // setMessages((prev) => [
+    //   ...prev,
+    //   {
+    //     id: Date.now(),
+    //     content,
+    //     sender,
+    //   },
+    // ]);
   };
+
 
   const handleSendQueryClick = async () => {
     if (!queryInput.trim() || !recordingId) return;
 
+    const isLocal = activeTab === 'local';
+    const setLoading = isLocal ? setIsLocalLoading : setIsGlobalLoading;
+
     try {
       setIsLoading(true);
+      setLoading(true)
       addMessage(queryInput, "user");
       setQueryInput("");
-      if (recordingId) {
+
+      if(isLocal){
         const response = await AudioService.getAIResponse(
           queryInput,
           recordingId
         );
-        console.log(response);
+        console.log("Local AI response",response);
+        setLoading(false);
         if (response?.ok && response?.status === 200) {
           const answer = response?.data?.answer;
           if (answer) {
@@ -82,6 +101,55 @@ export default function AiChatInterface({ recordingId }) {
           );
         }
       }
+      else{
+        //global AI chat
+        const response = await AudioService.getGlobalAiResponse(queryInput);
+        console.log("Global AI response..", response);
+        setLoading(false)
+        if (response?.ok && response?.status === 200) {
+          const answer = response?.data?.answer;
+          if (answer) {
+            // Add AI response
+            addMessage(answer, "assistant");
+          } else {
+            addMessage(
+              "Sorry, I encountered an error processing your request.",
+              "assistant"
+            );
+          }
+        }
+        else{
+          addMessage(
+            "Sorry, I encountered an error processing your request.",
+            "assistant"
+          );
+        }
+      }
+
+      // if (recordingId) {
+      //   const response = await AudioService.getAIResponse(
+      //     queryInput,
+      //     recordingId
+      //   );
+      //   console.log(response);
+      //   if (response?.ok && response?.status === 200) {
+      //     const answer = response?.data?.answer;
+      //     if (answer) {
+      //       // Add AI response
+      //       addMessage(answer, "assistant");
+      //     } else {
+      //       addMessage(
+      //         "Sorry, I encountered an error processing your request.",
+      //         "assistant"
+      //       );
+      //     }
+      //   } else {
+      //     addMessage(
+      //       "Sorry, I encountered an error processing your request.",
+      //       "assistant"
+      //     );
+      //   }
+      // }
     } catch (err) {
       console.error("AI api issue", err);
       addMessage(
@@ -90,6 +158,7 @@ export default function AiChatInterface({ recordingId }) {
       );
     } finally {
       setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -100,18 +169,10 @@ export default function AiChatInterface({ recordingId }) {
     }
   };
 
-  const AiChatAvatar = () => {
-    return (
-      <Avatar>
-        <AvatarImage src={aiChatAvatar} alt="AI" />
-        <AvatarFallback>AI</AvatarFallback>
-      </Avatar>
-    );
-  }
 
   return (
     <>
-      <ScrollArea className="h-64 md:px-2" ref={scrollAreaRef}>
+      {/* <ScrollArea className="h-64 md:px-2" ref={scrollAreaRef}>
         <div className="space-y-3">
         {messages.length === 0 && (
             <div className="p-4">
@@ -153,7 +214,6 @@ export default function AiChatInterface({ recordingId }) {
           {isLoading && (
             <div className="flex justify-start">
               <div className="flex gap-3 max-w-[80%]">
-                {/* <TopRightAvatar userName={session?.user?.name} /> */}
                 <AiChatAvatar/>
                 <div className="rounded-lg text-sm p-2 bg-gray-800 text-white">
                   Thinking...
@@ -162,7 +222,43 @@ export default function AiChatInterface({ recordingId }) {
             </div>
           )}
         </div>
-      </ScrollArea>
+      </ScrollArea> */}
+
+      <Tabs defaultValue="local" className="w-full" onValueChange={setActiveTab}>
+        <TabsList className="bg-uploadInput-bg">
+          <TabsTrigger 
+            value="local" 
+            className="text-white data-[state=active]:bg-white/10"
+          >
+            Local Chat
+          </TabsTrigger>
+          <TabsTrigger 
+            value="global" 
+            className="text-white data-[state=active]:bg-white/10"
+          >
+            Global Chat
+          </TabsTrigger>
+        </TabsList>
+        
+        <ScrollArea className="h-60 md:px-2" ref={scrollAreaRef}>
+          <TabsContent value="local">
+            <AiChatMessageBox 
+              messages={localMessages} 
+              isLoading={isLocalLoading}
+              username={session?.user?.name}
+            />
+          </TabsContent>
+          
+          <TabsContent value="global">
+            <AiChatMessageBox 
+              messages={globalMessages}
+              isLoading={isGlobalLoading}
+              username={session?.user?.name}
+            />
+          </TabsContent>
+        </ScrollArea>
+      </Tabs>
+
 
       <div className="p-4">
         <div className="flex gap-2">

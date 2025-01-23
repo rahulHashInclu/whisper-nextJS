@@ -244,7 +244,16 @@ export default function UploadAudioDragAndDrop() {
           setIsUploading(false);
           setSpeakers("");
           setAudioFile(null);
-          refreshSidebarData();
+          const recordingId = response?.data?.recording_id;
+          // refreshSidebarData();
+          const pollResult = await pollingRecordingStatus(recordingId);
+          if(pollResult.success){
+            console.log('Processing completed');
+            refreshSidebarData();
+          }
+          else{
+            console.log('Processing uploaded audio failed');
+          }
       }
       else{
         throw new Error("Failed to upload audio");
@@ -254,6 +263,72 @@ export default function UploadAudioDragAndDrop() {
       setIsUploading(false);
     }
   };
+
+  // polling function to check recording processing status
+  const pollingRecordingStatus = async (recordingId) =>{
+    const loadingToast = toast.loading('Processing recording...', {
+      duration: Infinity
+    });
+    
+    const maxAttempts = 1000; //setup the polling time to be 100 mins
+    const interval = 6000;
+    let attempts = 0;
+
+    const checkStatus = async () => {
+      try {
+        const response = await AudioService.getRecordingStatus(recordingId);
+        const status = response?.data?.recording_status.toLowerCase();
+  
+        switch (status) {
+          case 'completed':
+            toast.dismiss(loadingToast);
+            toast.success('Processing completed');
+            // refreshSidebarData();
+            return { success: true, status };
+          
+          case 'failed':
+            toast.dismiss(loadingToast);
+            toast.error('Processing failed');
+            return { success: false, status };
+          
+          case 'pending':
+            attempts++;
+            if (attempts >= maxAttempts) {
+              toast.dismiss(loadingToast);
+              toast.error('Processing timeout');
+              return { success: false, status: 'timeout' };
+            }
+            // Continue polling if pending
+            if(attempts === 2){
+              toast.loading('You can proceed with your tasks while processing happen in background...', {
+                id: loadingToast,
+              })
+            }
+            await new Promise(resolve => setTimeout(resolve, interval));
+            return { success: false, status: 'pending' };
+  
+          default:
+            toast.dismiss(loadingToast);
+            toast.error('Unknown processing status');
+            return { success: false, status: 'unknown' };
+        }
+      } catch (error) {
+        console.error('Error checking recording status:', error);
+        toast.dismiss(loadingToast);
+        toast.error('Error checking processing status');
+        return { success: false, status: 'error' };
+      }
+    };
+
+    let result;
+    do {
+      result = await checkStatus();
+    } while (result?.status === 'pending');
+  
+    return result;
+  
+
+  }
 
   const handleRecordingComplete = (blob) => {
     setSelectedFile(blob);
@@ -312,7 +387,7 @@ export default function UploadAudioDragAndDrop() {
           <p className="text-white text-lg">Drag & Drop or Upload your files</p>
           {!audioFile && (<Button
             variant="outline"
-            className="bg-white text-black flex gap-2 hover:bg-gray-100"
+            className="bg-white text-black flex gap-2 hover:bg-gray-100 cursor-not-allowed"
           >
             <img src={googleDriveIcon} alt="Google Drive" className="w-5 h-5" />
             Select from drive
