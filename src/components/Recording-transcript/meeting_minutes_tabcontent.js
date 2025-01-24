@@ -61,7 +61,7 @@ export default function MeetingMinutes({ recordingId }) {
         if(recordingId){
             const response = await AudioService.generateMeetingMinutes(recordingId.toString());
             console.log('Meeting minutes generated...', response);
-            if(response?.ok && response?.status === 200){
+            if(response?.ok && response?.status === 200 && response?.data?.status === "success"){
                 await pollMeetingMinutes();
             }
             else{
@@ -78,9 +78,20 @@ export default function MeetingMinutes({ recordingId }) {
   }
 
   useEffect(() => {
-    if (recordingId) {
-        generateMeetingMinutes();
+    const initializeMeetingMinutes = async () => {
+      if(!recordingId){
+        return
+      }
+      setIsLoading(true);
+      const meetingMinutesExist = await getMeetingMinutes();
+
+      if(!meetingMinutesExist){
+        await generateMeetingMinutes();
+      }
     }
+
+    initializeMeetingMinutes();
+
   }, [recordingId]);
 
   if (error) {
