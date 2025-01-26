@@ -15,6 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const editIcon = getAssetPath("/assets/icons/Edit-icon.svg");
 
+
 const DynamicSpeakerTimeline = ({
   segments,
   numSpeakers,
@@ -58,7 +59,7 @@ const DynamicSpeakerTimeline = ({
       });
 
       const response = await AudioService.updateSpeakerNames(jsonPath, updates);
-      console.log("Update speaker name response...", response); //debug
+      // console.log("Update speaker name response...", response); //debug
       if (response?.ok && response?.status === 200) {
         onSpeakerUpdate();
         toast.success("Speaker name updated successfully");
@@ -76,34 +77,10 @@ const DynamicSpeakerTimeline = ({
   };
 
   const groupedSegments = {};
-  //   for (let i = 0; i < numSpeakers; i++) {
-  //     groupedSegments[`speaker_${i}`] = segments.filter(
-  //       segment => segment.speaker === `speaker_${i}`
-  //     ).map(segment => ({
-  //       start: segment.start_time,
-  //       end: segment.end_time
-  //     }));
-  //   }
-  // for (let i = 0; i < numSpeakers; i++) {
-  //   // const speakerId = `speaker_${i}`;
-  //   const currentSpeakerName = speakersList[i];
-
-  //   groupedSegments[currentSpeakerName] = segments
-  //     .filter(
-  //       (segment) =>
-  //         // Match either the speaker_X format or the current speaker name
-  //         // segment.speaker === speakerId ||
-  //         segment.speaker === currentSpeakerName
-  //     )
-  //     .map((segment) => ({
-  //       start: segment.start_time,
-  //       end: segment.end_time,
-  //     }));
-  // }
 
 speakersList.forEach((speakerName) => {
   // Log to see what we're filtering for
-  console.log("Filtering for speaker:", speakerName);
+  // console.log("Filtering for speaker:", speakerName);
   
   const speakerSegments = segments.filter(segment => 
     segment.speaker === speakerName
@@ -113,7 +90,7 @@ speakersList.forEach((speakerName) => {
   }));
   
   // Log the found segments
-  console.log("Found segments for", speakerName, ":", speakerSegments);
+  // console.log("Found segments for", speakerName, ":", speakerSegments);
   
   groupedSegments[speakerName] = speakerSegments;
 });
@@ -130,9 +107,11 @@ speakersList.forEach((speakerName) => {
   const renderSpeakerTimeline = (speakerId, index) => {
     const speakerSegments = groupedSegments[speakerId] || [];
     const speakerName = speakersList[index];
-    console.log("SpEAKER SEGMENTS..", speakerSegments);
-    console.log("SPEAKER Name..", speakerName);
-    console.log("SPEAKER ID...", speakerId);
+    // console.log("Speakers list...", speakersList);
+    // console.log("Grouped segments...", groupedSegments);
+    // console.log("SpEAKER SEGMENTS..", speakerSegments);
+    // console.log("SPEAKER Name..", speakerName);
+    // console.log("SPEAKER ID...", speakerId);
     const colorClass = speakerColors[index % 2];
 
     return (
@@ -140,7 +119,7 @@ speakersList.forEach((speakerName) => {
         <div
           className={`w-28 md:w-28 text-sm text-gray-200 font-medium flex justify-between items-center gap-3 shrink-0`}
         >
-          <p className={`text-${colorClass} truncate text-ellipsis max-w-40`}>{speakerName}</p>
+          <p className={`${colorClass.startsWith('violet') ? 'text-violet-500':'text-rose-500'} truncate text-ellipsis max-w-40`}>{speakerName}</p>
           <button onClick={() => handleSpeakerNameEdit(speakerName, index)}>
             <img src={editIcon} alt="edit" className="w-4 h-4" />
           </button>
@@ -153,7 +132,7 @@ speakersList.forEach((speakerName) => {
             return (
               <div
                 key={`${speakerId}-${segmentIndex}`}
-                className={`absolute h-full bg-${colorClass} rounded-sm`}
+                className={`absolute h-full ${colorClass.startsWith('violet') ? 'bg-violet-500' : 'bg-rose-500'} rounded-sm`}
                 style={{
                   left: `${leftPosition}%`,
                   width: `${width}%`,

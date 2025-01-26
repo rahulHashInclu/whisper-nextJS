@@ -86,7 +86,7 @@ export default function MeetingMinutes({ recordingId }) {
       const meetingMinutesExist = await getMeetingMinutes();
 
       if(!meetingMinutesExist){
-        await generateMeetingMinutes();
+        await generateMeetingMinutes(); // generate meeting minutes only if meeting minutes not available
       }
     }
 
@@ -102,24 +102,6 @@ export default function MeetingMinutes({ recordingId }) {
     );
   }
 
-  const LoadingSkeleton = () => (
-    <div className="space-y-6">
-      <div>
-        <Skeleton className="h-6 w-32 bg-gray-800 mb-4" />
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-full bg-gray-800" />
-          <Skeleton className="h-8 w-3/4 bg-gray-800" />
-        </div>
-      </div>
-      <div>
-        <Skeleton className="h-6 w-32 bg-gray-800 mb-4" />
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-full bg-gray-800" />
-          <Skeleton className="h-8 w-4/5 bg-gray-800" />
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <ScrollArea className="h-72 w-full">
