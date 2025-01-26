@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import RecordingTranscript from "./recording_transcript_card";
 import AudioPlayCard from "./Audio waveform/audio_play_card";
 import { AudioService } from "@/lib/audioService";
+import { useTimeline } from "@/context/audioContext";
 
 
 export function RecordingWrapper({recordingId}){
@@ -17,6 +18,7 @@ export function RecordingWrapper({recordingId}){
     const [isLoading, setIsLoading] = useState(false);
     const [transcriptFetchingError, setTranscriptFetchingError] = useState("");
     const [embeddingCompleted, setEmbeddingCompleted] = useState(false);
+    const { refreshTranscriptCard } = useTimeline();
 
     const handleDataUpdate = (apiData) => {
         const segments = apiData?.result;
@@ -79,6 +81,10 @@ export function RecordingWrapper({recordingId}){
         refreshTranscriptionData();
         getEmbeddingStatus();
     }, [recordingId])
+
+    useEffect(() => {
+      refreshTranscriptionData();
+    }, [refreshTranscriptCard])
     
 
     return(
