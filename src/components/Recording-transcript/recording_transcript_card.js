@@ -1,12 +1,8 @@
 'use client'
 
-import { MoreHorizontal, Search } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Card, CardHeader, CardContent } from "../ui/card";
-import { Button } from "../ui/button";
 import TranscriptTabContents from "./transcript_tabcontent";
-import { useEffect, useState } from "react";
-import { AudioService } from "@/lib/audioService";
 import AiChatInterface from "./ai_chat_tabcontent";
 import MeetingMinutes from "./meeting_minutes_tabcontent";
 import { getAssetPath } from "@/lib/utils";
@@ -19,58 +15,10 @@ const tabs_trigger_style = "border-b-2 border-transparent data-[state=active]:bo
 
 export default function RecordingTranscript({recordingId, onTimelineUpdate, transcriptFetchData, transcriptFetchingError, embeddingCompleted}) {
 
-    // const [fetchedTranscriptionData, setFetchedTranscriptionData] = useState({});
-
     if(transcriptFetchData){
       console.log('Transcript fetch data...', transcriptFetchData);
     }
 
-    // const handleDataUpdate = (apiData) => {
-    //   const segments = apiData?.result;
-    //   // Get total duration from last segments end_time
-    //   const totalDuration = segments && segments.length > 0 
-    //     ? segments[segments.length - 1].end_time 
-    //     : 0;
-    
-    //   const timelineData ={
-    //       segments: segments,
-    //       numSpeakers: apiData?.num_speakers, // or however you determine this
-    //       speakersList: apiData?.speaker_list,
-    //       totalDuration: totalDuration,
-    //       jsonPath: apiData?.json_file
-    //     };
-    //     console.log('Timeline data from recording transcript...', timelineData);
-    //     onTimelineUpdate(timelineData);
-    // };
-    
-    
-
-    // const fetchAudioTranscriptions = async () => {
-    //     try{
-    //         if(recordingId){
-    //             const response = await AudioService.getTranscriptions(recordingId.toString());
-    //             console.log('Fteched transcriptions..', response);
-    //             if(response?.ok && response?.status === 200){
-    //               setFetchedTranscriptionData(response?.data?.result);
-    //               handleDataUpdate(response?.data?.result)
-    //             }
-    //             else{
-    //               console.log('Couldnt fetch transcriptions');
-    //               setFetchedTranscriptionData({ result: [] });
-    //             }
-    //         }
-    //     }
-    //     catch(err){
-    //       setFetchedTranscriptionData({ result: [] });
-    //       console.error('Failed to fetch transcriptions...', err);
-    //     }
-    // }
-
-    // useEffect(()=>{
-    //   fetchAudioTranscriptions();
-    // }, [recordingId])
-  
-    console.log("RECORDING NAME", transcriptFetchData?.recordingname)
 
   return (
     <Card className="w-full max-w-3xl bg-signupcard-bg border-0 shadow-xl rounded-2xl max-h-[70vh]">

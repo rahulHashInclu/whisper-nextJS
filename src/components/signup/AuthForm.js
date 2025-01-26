@@ -118,11 +118,19 @@ export default function AuthForm({ initialType }) {
         // );
         const response = await signupPromise;
         console.log("Signup API response...", response);
-        if (response?.ok && response?.status === 200) {
+        const errorText = await response.json();
+        if(errorText?.error){
+          toast.error(errorText.error);
+        }
+        else if (response?.ok && response?.status === 200) {
           setIsSubmitting(false);
           toast.success("Account created successfully!");
           router.push('/signin');
-        } else {
+        }
+         else {
+          // const errorText = await response.json();
+          // // const errorData = JSON.parse(errorText);
+          // console.log("ERROR RESPONSE". errorText);
           setGlobalError("Signup failed. Please try again");
           toast.error("Sign-up failed. Please try again");
         }

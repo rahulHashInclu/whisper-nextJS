@@ -61,7 +61,7 @@ export default function MeetingMinutes({ recordingId }) {
         if(recordingId){
             const response = await AudioService.generateMeetingMinutes(recordingId.toString());
             console.log('Meeting minutes generated...', response);
-            if(response?.ok && response?.status === 200){
+            if(response?.ok && response?.status === 200 && response?.data?.status === "success"){
                 await pollMeetingMinutes();
             }
             else{
@@ -78,9 +78,20 @@ export default function MeetingMinutes({ recordingId }) {
   }
 
   useEffect(() => {
-    if (recordingId) {
-        generateMeetingMinutes();
+    const initializeMeetingMinutes = async () => {
+      if(!recordingId){
+        return
+      }
+      setIsLoading(true);
+      const meetingMinutesExist = await getMeetingMinutes();
+
+      if(!meetingMinutesExist){
+        await generateMeetingMinutes(); // generate meeting minutes only if meeting minutes not available
+      }
     }
+
+    initializeMeetingMinutes();
+
   }, [recordingId]);
 
   if (error) {
@@ -91,24 +102,6 @@ export default function MeetingMinutes({ recordingId }) {
     );
   }
 
-  const LoadingSkeleton = () => (
-    <div className="space-y-6">
-      <div>
-        <Skeleton className="h-6 w-32 bg-gray-800 mb-4" />
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-full bg-gray-800" />
-          <Skeleton className="h-8 w-3/4 bg-gray-800" />
-        </div>
-      </div>
-      <div>
-        <Skeleton className="h-6 w-32 bg-gray-800 mb-4" />
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-full bg-gray-800" />
-          <Skeleton className="h-8 w-4/5 bg-gray-800" />
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <ScrollArea className="h-72 w-full">
@@ -127,7 +120,7 @@ export default function MeetingMinutes({ recordingId }) {
                 <Badge 
                   key={index} 
                   variant="outline" 
-                  className="bg-gray-800 text-white border-gray-700 flex items-center gap-2"
+                  className="bg-[#FFFFFF0D] text-white border-gray-700 flex items-center gap-2"
                 >
                   {attendee}
                 </Badge>

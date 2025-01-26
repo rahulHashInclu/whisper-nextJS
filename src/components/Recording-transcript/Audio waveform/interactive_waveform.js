@@ -5,6 +5,7 @@ import { Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { getAssetPath } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
 const video_forward_icon = getAssetPath("/assets/vid-10sec-forward-icon.svg");
 const video_backward_icon = getAssetPath("/assets/vid-10sec-backward-icon.svg");
@@ -21,8 +22,12 @@ export default function InteractiveAudioWaveform({ audioUrl }) {
   const [duration, setDuration] = useState("0:00");
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState("0:00");
+  const [isReady, setIsReady] = useState(false);
+
+  console.log("Audio url...", audioUrl);
 
   useEffect(() => {
+    setIsReady(false);
     waveSurferRef.current = WaveSurfer.create({
       container: waveFormRef.current,
       waveColor: "#4C4C4C",
@@ -36,9 +41,14 @@ export default function InteractiveAudioWaveform({ audioUrl }) {
     });
     waveSurferRef.current.load(audioUrl);
 
+    // waveSurferRef.current.on("loading", () => {
+    //   setIsLoading(true);
+    // })
+
     //setting up event listeners
     waveSurferRef.current.on("ready", () => {
       setDuration(formatTime(waveSurferRef.current.getDuration()));
+      setIsReady(true);
     });
 
     waveSurferRef.current.on("audioprocess", () => {
@@ -59,6 +69,7 @@ export default function InteractiveAudioWaveform({ audioUrl }) {
         waveSurferRef.current.pause();
         waveSurferRef.current.destroy();
         waveSurferRef.current = null;
+        setIsReady(false);
       }
     };
   }, [audioUrl]);
@@ -70,21 +81,25 @@ export default function InteractiveAudioWaveform({ audioUrl }) {
   };
 
   const handleSkipForward = () => {
-    if(waveSurferRef.current){
-        waveSurferRef.current.skip(10);
+    if (waveSurferRef.current) {
+      waveSurferRef.current.skip(10);
     }
-  }
+  };
 
   const handleSkipBackward = () => {
-    if(waveSurferRef.current){
-        waveSurferRef.current.skip(-10);
+    if (waveSurferRef.current) {
+      waveSurferRef.current.skip(-10);
     }
-  }
+  };
 
   return (
     <div className="w-full flex items-center justify-between gap-4 px-2 py-4 rounded-lg">
       <div className="flex items-center gap-2">
-        <Button className="w-8 h-8 rounded-full flex items-center justify-center bg-transparent border border-gray-600 hover:bg-gray-800" size="icon" onClick={handleSkipBackward}>
+        <Button
+          className="w-8 h-8 rounded-full flex items-center justify-center bg-transparent border border-gray-600 hover:bg-gray-800"
+          size="icon"
+          onClick={handleSkipBackward}
+        >
           <Image
             src={video_backward_icon}
             alt="video-backward-icon"
@@ -96,9 +111,11 @@ export default function InteractiveAudioWaveform({ audioUrl }) {
           onClick={handlePlayPause}
           className="rounded-full flex items-center justify-center bg-white hover:bg-gray-200 shadow-lg shadow-[#FFFFFF4D]"
           size="icon"
-          disabled={true}
+          disabled={!audioUrl || !isReady}
         >
-          {isPlaying ? (
+          {!isReady ? (
+            <Loader2 className="animate-spin text-black" />
+          ) : (isPlaying ? (
             <Pause
               size={16}
               color="black"
@@ -110,7 +127,7 @@ export default function InteractiveAudioWaveform({ audioUrl }) {
               color="black"
               className="text-black hover:text-white transition-colors duration-200"
             /> // Play icon
-          )}
+          ))}
         </Button>
         <Button
           className="w-8 h-8 rounded-full flex items-center justify-center bg-transparent border border-gray-600 hover:bg-gray-800"
