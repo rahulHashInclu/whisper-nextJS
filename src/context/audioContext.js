@@ -11,6 +11,7 @@ export function TimelineProvider({ children }) {
     totalDuration: 0
   });
   const [refreshSidebar, setRefreshSidebar] = useState(false);
+  const [refreshTranscriptCard, setRefreshTranscriptCard] = useState(false);
 
   const updateTimelineData = (data) => {
     setTimelineData(data);
@@ -20,8 +21,12 @@ export function TimelineProvider({ children }) {
     setRefreshSidebar(!refreshSidebar);
   }
 
+  const refreshTranscriptFn = () => {
+    setRefreshTranscriptCard(prev => !prev);
+  }
+
   return (
-    <TimelineContext.Provider value={{ timelineData, updateTimelineData, refreshSidebarData, refreshSidebar }}>
+    <TimelineContext.Provider value={{ timelineData, updateTimelineData, refreshSidebarData, refreshSidebar, refreshTranscriptFn, refreshTranscriptCard }}>
       {children}
     </TimelineContext.Provider>
   );

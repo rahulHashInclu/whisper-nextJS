@@ -37,7 +37,7 @@ export default function RecordingsList({ recordings }) {
   const monthAgo = subDays(today, 30);
   const [isLoading, setIsLoading] = useState(true);
   const [activeId, setActiveId] = useState("");
-  const { refreshSidebar } = useTimeline();
+  const { refreshSidebar, refreshTranscriptFn } = useTimeline();
   const [recordingName, setRecordingName] = useState("");
   const [selectRecordingId, setSelectRecordingId] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -182,6 +182,7 @@ export default function RecordingsList({ recordings }) {
           setSelectRecordingId("");
           setDialogOpen(false);
           getRecordings();
+          refreshTranscriptFn();
         } else {
           throw new Error("Failed to rename recording");
         }
