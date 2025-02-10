@@ -86,13 +86,15 @@ export default function AuthForm({ initialType }) {
         }));
         return;
       }
+
+      const validationResult = formValidation(formData);
+      if (!validationResult.isValid) {
+        setFormErrors(validationResult.errors);
+        return;
+      }
     }
 
-    const validationResult = formValidation(formData);
-    if (!validationResult.isValid) {
-      setFormErrors(validationResult.errors);
-      return;
-    }
+    
 
     setIsSubmitting(true);
 
