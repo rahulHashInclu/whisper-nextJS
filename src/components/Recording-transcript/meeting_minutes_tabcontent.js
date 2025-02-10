@@ -5,9 +5,11 @@ import { useEffect, useState } from 'react';
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card } from "@/components/ui/card";
+import { Button } from '../ui/button';
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AudioService } from '@/lib/audioService';
+import { downloadMeetingMinutes } from './Meeting_minutes_export';
 
 export default function MeetingMinutes({ recordingId }) {
   const [minutesData, setMinutesData] = useState(null);
@@ -104,6 +106,11 @@ export default function MeetingMinutes({ recordingId }) {
 
 
   return (
+    <>
+    <div className='flex justify-end mb-2'>
+      <Button onClick={() => downloadMeetingMinutes(minutesData)} className="hover:bg-gray-400 hover:text-black">Download (.docx)</Button>
+    </div>
+    
     <ScrollArea className="h-72 w-full">
       <div className="space-y-6">
         {/* Attendees Section */}
@@ -238,5 +245,6 @@ export default function MeetingMinutes({ recordingId }) {
         </section>
       </div>
     </ScrollArea>
+    </>
   );
 }

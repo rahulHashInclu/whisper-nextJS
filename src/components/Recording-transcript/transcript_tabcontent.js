@@ -4,6 +4,8 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { ScrollArea } from "../ui/scroll-area";
 import { Alert, AlertDescription } from "../ui/alert";
 import { getUserInitials } from "@/lib/utils";
+import { downloadTranscript } from "./Transcript_export";
+import { Button } from "../ui/button";
 
 
 export default function TranscriptTabContents({ recordingId, transcriptionContent, transcriptFetchingError }) {
@@ -64,6 +66,11 @@ export default function TranscriptTabContents({ recordingId, transcriptionConten
   }
 
   return (
+    <>
+        <div className='flex justify-end mb-2'>
+          <Button onClick={() => downloadTranscript(transcriptionContent)} className="hover:bg-gray-400 hover:text-black">Download (.docx)</Button>
+        </div>
+    
     <ScrollArea className="h-72">
     <div className="space-y-4 overflow-y-auto h-full">
       {transcriptionContent?.result?.map((segment, index) => {
@@ -92,5 +99,6 @@ export default function TranscriptTabContents({ recordingId, transcriptionConten
       )})}
     </div>
     </ScrollArea>
+    </>
   );
 }
